@@ -1,4 +1,5 @@
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 // Прокликивает последовательно все пункты меню навигации слева, включая вложенные пункты.
-// Для каждой страницы проверяет наличие заголовка (элемента с тэгом h1)
+// Для каждой страницы проверяет наличие реестров (элемента с локатором ".MuiGrid-spacing-xs-2 .MuiGrid-root")
 
 public class etd_foms_navigation {
 
@@ -70,6 +71,7 @@ public class etd_foms_navigation {
             menu = driver.findElements(By.cssSelector(".treeItem-level-0 h6"));
             menu.get(i).click();
             TimeUnit.MILLISECONDS.sleep(500);
+            Assert.assertTrue(isElementPresent(driver, By.cssSelector(".MuiGrid-spacing-xs-2 .MuiGrid-root")));
 
             int sub_menu = driver.findElements(By.cssSelector(".MuiCollapse-wrapperInner .treeItem-level-1 .treeItem-node h6")).size();
 
@@ -80,6 +82,7 @@ public class etd_foms_navigation {
                     //menu_sub = driver.findElements(By.cssSelector(".MuiCollapse-wrapperInner .treeItem-level-1 .treeItem-node h6"));
                     menu_sub.get(j).click();
                     TimeUnit.MILLISECONDS.sleep(500);
+                    Assert.assertTrue(isElementPresent(driver, By.cssSelector(".MuiGrid-spacing-xs-2 .MuiGrid-root")));
 
 //                    List<WebElement> el = driver.findElements(By.cssSelector("li ul .MuiCollapse-root h6"));
 //
@@ -98,6 +101,7 @@ public class etd_foms_navigation {
                             //List<WebElement> sub2 = driver.findElements(By.cssSelector("li ul .MuiCollapse-root [aria-selected=false]"));
                             menu_sub2 = driver.findElements(By.cssSelector("li ul .MuiCollapse-root h6"));
                             menu_sub2.get(k).click();
+                            Assert.assertTrue(isElementPresent(driver, By.cssSelector(".MuiGrid-spacing-xs-2 .MuiGrid-root")));
                             //TimeUnit.SECONDS.sleep(2);
                             //wait.until(ExpectedConditions.stalenessOf(menu_sub2.get(k)));
 

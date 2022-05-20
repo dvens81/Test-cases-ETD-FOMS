@@ -101,6 +101,7 @@ public class etd_foms_navigation {
                 driver.findElement(By.cssSelector("[data-testid=ExpandMoreIcon]")).click();
                 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".MuiCollapse-wrapperInner .treeItem-level-1 .treeItem-node h6")));
                 //TimeUnit.MILLISECONDS.sleep(500);
+                
             }
 
         }

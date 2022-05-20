@@ -9,8 +9,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +44,7 @@ public class etd_foms_navigation {
         driver.register(new MyListener());
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         //driver.manage().timeouts().pageLoadTimeout(6, TimeUnit.SECONDS);
-        //wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
     }
 
@@ -52,7 +54,7 @@ public class etd_foms_navigation {
 
     @Test
     public void myFirstTest() throws InterruptedException {
-        driver.get("https://d-customer-balancer-iam-proxy-01.foms.novalocal/etd-front/"); //https://d-customer-balancer-iam-proxy-02.foms.novalocal/etd-front
+        driver.get("https://d-customer-balancer-iam-proxy-01.foms.novalocal/etd-front/");
         driver.findElement(By.cssSelector("#details-button")).click();
         driver.findElement(By.cssSelector("#proceed-link")).click();
         driver.findElement(By.cssSelector("#details-button")).click();
@@ -70,7 +72,6 @@ public class etd_foms_navigation {
         for (int i = 0; i < menu.size(); i++) {
             menu = driver.findElements(By.cssSelector(".treeItem-level-0 h6"));
             menu.get(i).click();
-            TimeUnit.MILLISECONDS.sleep(500);
             Assert.assertTrue(isElementPresent(driver, By.cssSelector(".MuiGrid-spacing-xs-2 .MuiGrid-root")));
 
             int sub_menu = driver.findElements(By.cssSelector(".MuiCollapse-wrapperInner .treeItem-level-1 .treeItem-node h6")).size();
@@ -79,43 +80,27 @@ public class etd_foms_navigation {
                 List<WebElement> menu_sub = driver.findElements(By.cssSelector(".MuiCollapse-wrapperInner .treeItem-level-1 .treeItem-node h6"));
 
                 for (int j = 0; j < menu_sub.size(); j++) {
-                    //menu_sub = driver.findElements(By.cssSelector(".MuiCollapse-wrapperInner .treeItem-level-1 .treeItem-node h6"));
                     menu_sub.get(j).click();
-                    TimeUnit.MILLISECONDS.sleep(500);
+                    TimeUnit.MILLISECONDS.sleep(300);
                     Assert.assertTrue(isElementPresent(driver, By.cssSelector(".MuiGrid-spacing-xs-2 .MuiGrid-root")));
-
-//                    List<WebElement> el = driver.findElements(By.cssSelector("li ul .MuiCollapse-root h6"));
-//
-//                    if (el.size() == 0) {
-//                        wait.until(ExpectedConditions.invisibilityOfAllElements(el));
-//                    }
 
                     int sub_menu2 = driver.findElements(By.cssSelector("li ul .MuiCollapse-root h6")).size();
 
                     if (sub_menu2 > 0) {
                         List<WebElement> menu_sub2 = driver.findElements(By.cssSelector("li ul .MuiCollapse-root h6"));
-
                         for (int k = 0; k < menu_sub2.size(); k++) {
-                            //List<WebElement> elements = wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector("li ul .MuiCollapse-root h6"), menu_sub2.size()));
-                            //wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("li ul .MuiCollapse-root h6")));
-                            //List<WebElement> sub2 = driver.findElements(By.cssSelector("li ul .MuiCollapse-root [aria-selected=false]"));
                             menu_sub2 = driver.findElements(By.cssSelector("li ul .MuiCollapse-root h6"));
                             menu_sub2.get(k).click();
                             Assert.assertTrue(isElementPresent(driver, By.cssSelector(".MuiGrid-spacing-xs-2 .MuiGrid-root")));
-                            //TimeUnit.SECONDS.sleep(2);
-                            //wait.until(ExpectedConditions.stalenessOf(menu_sub2.get(k)));
-
-                            //wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[aria-selected=true]")));
-
                         }
                     }
-
                 }
-
             }
+
             if (isElementPresent(driver, By.cssSelector("[data-testid=ExpandMoreIcon]"))) {
                 driver.findElement(By.cssSelector("[data-testid=ExpandMoreIcon]")).click();
-                TimeUnit.MILLISECONDS.sleep(500);
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".MuiCollapse-wrapperInner .treeItem-level-1 .treeItem-node h6")));
+                //TimeUnit.MILLISECONDS.sleep(500);
             }
 
         }

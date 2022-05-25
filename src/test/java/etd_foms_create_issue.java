@@ -2,18 +2,12 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class etd_foms_create_issue {
@@ -28,9 +22,9 @@ public class etd_foms_create_issue {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         //driver.manage().timeouts().pageLoadTimeout(6, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
     }
 
@@ -62,9 +56,12 @@ public class etd_foms_create_issue {
         driver.findElement(By.cssSelector(".MuiGrid-grid-md-7 div:nth-child(3) [role=button]")).click();
         driver.findElement(By.cssSelector("[role=listbox] li:first-child")).click();
         driver.findElement(By.cssSelector("input[name=summary]")).sendKeys("Test, test 123 !");
-        driver.findElement(By.cssSelector("textarea")).
-                sendKeys("test 00935300000000000 FEDERAL STATE BUDGETARY INSTITUTION \"V.A. ALMAZOV NATIONAL MEDICAL RESEARCH CENTER\" " +
-                        "OF THE MINISTRY OF HEALTH OF THE RUSSIAN FEDERATION test");
+        WebElement textarea = driver.findElement(By.cssSelector(".field-container_nativeTextarea textarea"));
+        textarea.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        textarea.sendKeys(Keys.chord(Keys.DELETE));
+        textarea.sendKeys("test 00935300 STATE INSTITUTION \"V.A. ALMAZOV NATIONAL MEDICAL\" OF THE RUSSIAN FEDERATION test");
+        //TimeUnit.MILLISECONDS.sleep(7000);
+        driver.findElement(By.cssSelector(".dropzone-upload-text")).sendKeys("C:/Download/Screen Recorder/foto.jpeg");
 
     }
 

@@ -51,17 +51,17 @@ public class etd_foms_create_issue {
         driver.findElement(By.cssSelector(".MuiList-root span:first-child")).click();
         TimeUnit.MILLISECONDS.sleep(400);
         driver.findElement(By.cssSelector(".MuiOutlinedInput-root [role=button]")).click();
-        //driver.findElement(By.cssSelector("[data-value=РМП]")).click(); // Не работает связка селениум и хром в части кодировки кириллицы
-        driver.findElement(By.cssSelector(".MuiList-root li:nth-child(5)")).click();
+        driver.findElement(By.cssSelector("[data-value=РМП]")).click();
         driver.findElement(By.cssSelector(".MuiGrid-grid-md-7 div:nth-child(3) [role=button]")).click();
         driver.findElement(By.cssSelector("[role=listbox] li:first-child")).click();
-        driver.findElement(By.cssSelector("input[name=summary]")).sendKeys("Test, test 123 !");
+        driver.findElement(By.cssSelector("input[name=summary]")).sendKeys("Тест, тест 123 !");
         WebElement textarea = driver.findElement(By.cssSelector(".field-container_nativeTextarea textarea"));
         textarea.sendKeys(Keys.chord(Keys.CONTROL, "a"));
         textarea.sendKeys(Keys.chord(Keys.DELETE));
-        textarea.sendKeys("test 00935300 STATE INSTITUTION \"V.A. ALMAZOV NATIONAL MEDICAL\" OF THE RUSSIAN FEDERATION test");
-        //TimeUnit.MILLISECONDS.sleep(7000);
-        driver.findElement(By.cssSelector(".dropzone-upload-text")).sendKeys("C:/Download/Screen Recorder/foto.jpeg");
+        textarea.sendKeys("Не открывается \"Реестр входящих документов\"");
+        WebElement input_file = driver.findElement(By.cssSelector("input[type=file]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", input_file);
+        input_file.sendKeys("C:/Download/Screen Recorder/foto.jpeg");
 
     }
 

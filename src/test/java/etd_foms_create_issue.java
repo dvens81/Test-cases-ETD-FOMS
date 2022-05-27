@@ -10,6 +10,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+// Создание обращения с вложением. Добавление дополнительного адреса электронной почты и телефона.
+
+// Проверки:
+// 1) Обращение создалось. Переход в карточку обращения. Вкладка созданного обращения отображается.
+//    Номер обращения на вкладке совпадает с номером обращения в всплывающем окошке (при успешном создании обращения).
+// 2) Темы в форме создания обращения и в карточке обращения совпадают.
+// 3) Текст обращения в форме создания обращения и описание в карточке обращения совпадают
+// 4) Добавление комментария. Отображение нового комментария.
+//    Введенный комментарий в карточке обращения в поле "Комментарий" совпадает с отображаемым комментарием в поле "Активности по обращению".
+// 5) Корректное число вложений в карточке обращения, с учетом вложения при создании обращения
+// 6) Добавление нового вложения в карточке обращения. Проверка появления нового вложения
+
 public class etd_foms_create_issue {
 
     private WebDriverWait wait;
@@ -21,13 +33,16 @@ public class etd_foms_create_issue {
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        //driver.manage().timeouts().pageLoadTimeout(6, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
     }
 
-    boolean isElementPresent(WebDriver driver, By locator) {
-        return driver.findElements(locator).size() > 0;
+    boolean isElementPresent_4(WebDriver driver, By locator) {
+        return driver.findElements(locator).size() == 4;
+    }
+
+    boolean isElementPresent_5(WebDriver driver, By locator) {
+        return driver.findElements(locator).size() == 5;
     }
 
     @Test
@@ -79,9 +94,9 @@ public class etd_foms_create_issue {
 
         WebElement issue = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content__link")));
         String issue_number_create = issue.getText();
+        issue.click();
         String issue_number_create_registr = issue_number_create.toLowerCase();
         System.out.println("Номер созданного обращения: " + issue_number_create_registr);
-        issue.click();
 
         // Проверки
 
@@ -91,7 +106,7 @@ public class etd_foms_create_issue {
         Assert.assertEquals(issue_number_create_registr, issue_number_tab_registr);
 
         String topic_issue_card = driver.findElement(By.cssSelector(".issue-details__summary")).getText();
-        System.out.println("Тема в форме обращения: " + topic_issue);
+        System.out.println("Тема в форме создания обращения: " + topic_issue);
         System.out.println("Тема в карточке обращения: " + topic_issue_card);
         Assert.assertEquals(topic_issue, topic_issue_card);
 
@@ -108,6 +123,14 @@ public class etd_foms_create_issue {
         System.out.println("Введенный комментарий в карточке обращения: " + userComment);
         System.out.println("Отображаемый комментарий в поле Активности по обращению: " + userCommentIssueActivities);
         Assert.assertEquals(userComment, userCommentIssueActivities);
+
+        Assert.assertTrue(isElementPresent_4(driver, By.cssSelector("a.issue-details-file")));
+
+        WebElement input_file_dropzone = driver.findElement(By.cssSelector("input[type=file]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", input_file_dropzone);
+        input_file_dropzone.sendKeys("C:/Download/Screen Recorder/foto2.png");
+        TimeUnit.MILLISECONDS.sleep(3000);
+        Assert.assertTrue(isElementPresent_5(driver, By.cssSelector("a.issue-details-file")));
 
     }
 

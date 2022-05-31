@@ -2,10 +2,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -82,7 +79,7 @@ public class etd_foms_user_profile {
         String alertDialogText_jpg = alertDialog_jpg.getText();
         System.out.println(alertDialogText_jpg + " .jpg");
         Assert.assertEquals(alertDialogText_jpg, "Фотография успешно загружена");
-        TimeUnit.MILLISECONDS.sleep(1000);
+        TimeUnit.MILLISECONDS.sleep(2000);
 
         driver.findElement(By.cssSelector(".avatar")).click();
         driver.findElement(By.cssSelector(".dialog-buttons button:nth-child(2)")).click();
@@ -101,7 +98,7 @@ public class etd_foms_user_profile {
         String alertDialogText_png = alertDialog_png.getText();
         System.out.println(alertDialogText_png + " .png");
         Assert.assertEquals(alertDialogText_png, "Фотография успешно загружена");
-        TimeUnit.MILLISECONDS.sleep(1000);
+        TimeUnit.MILLISECONDS.sleep(2000);
 
         driver.findElement(By.cssSelector(".avatar")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".avatar-actions-dialog__image")));
@@ -121,6 +118,39 @@ public class etd_foms_user_profile {
         String alertDialogText_gif = alertDialog_gif.getText();
         System.out.println(alertDialogText_gif + " .gif");
         Assert.assertEquals(alertDialogText_gif, "Фотография успешно загружена");
+        TimeUnit.MILLISECONDS.sleep(3000);
+
+        // Загрузка аватарки размером более 10Мб. Проверка, что аватарка не загружается из-за ограничения максимального размера файла
+        driver.findElement(By.cssSelector(".avatar")).click();
+        TimeUnit.MILLISECONDS.sleep(1000);
+        driver.findElement(By.cssSelector(".dialog-buttons button:nth-child(1)")).click();
+        TimeUnit.MILLISECONDS.sleep(1000);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[type=file]")));
+
+        WebElement input_file_size = driver.findElement(By.cssSelector("input[type=file]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", input_file_size);
+        TimeUnit.MILLISECONDS.sleep(1000);
+        input_file_size.sendKeys("C:/Download/Avatar вложения/Тест вложений большого объема/test.jpg");
+
+        WebElement alertDialog_size = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content li")));
+        String alertDialogText_size = alertDialog_size.getText();
+        System.out.println(alertDialogText_size);
+        Assert.assertEquals(alertDialogText_size, "Файл превышает ограничение максимального размера, установленного администратором (10 МБ)");
+        driver.findElement(By.cssSelector(".app > div:last-child .dialog-buttons button:last-child")).click();
+        driver.findElement(By.cssSelector(".dialog-buttons button:nth-child(3)")).click();
+
+        // Добавление дополнительного адреса электронной почты и телефона
+
+        driver.findElement(By.cssSelector(".user-profile-card-user section:nth-child(3) > div:last-child > div:first-child svg")).click();
+        WebElement phone = driver.findElement(By.cssSelector("[name=phone]"));
+        String phoneNumber = "9876543210";
+        phone.sendKeys(Keys.chord(Keys.HOME));
+        phone.sendKeys(phoneNumber);
+        driver.findElement(By.cssSelector("[role=dialog] [type=submit]")).click();
+        WebElement phoneNumberCreate = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".user-profile-card__item_edit")));
+        String phoneNumberCreateText = phoneNumberCreate.getText();
+        System.out.println("Номер введенного телефона: " + phoneNumber);
+        System.out.println("Номер отображаемого телефона: " + phoneNumberCreateText);
 
     }
 

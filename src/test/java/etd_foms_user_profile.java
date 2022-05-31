@@ -1,4 +1,5 @@
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -7,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +24,7 @@ public class etd_foms_user_profile {
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
     }
 
@@ -54,17 +56,71 @@ public class etd_foms_user_profile {
 
         driver.findElement(By.cssSelector(".avatar")).click();
 
+        // Проверка наличия аватарки. Если аватарка есть - удаляем. Проверяем, что удаление выполнилось корректно
+
         if (isElementPresent(driver, By.cssSelector("input[type=file]"))) {
             driver.findElement(By.cssSelector(".dialog-buttons button:nth-child(2)")).click();
             driver.findElement(By.cssSelector(".app > div:last-child .dialog-buttons button:first-child")).click();
+            WebElement alertDialog = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content")));
+            String alertDialogText = alertDialog.getText();
+            System.out.println(alertDialogText);
+            Assert.assertEquals(alertDialogText, "Фотография успешно удалена");
             driver.findElement(By.cssSelector(".avatar")).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[type=file]")));
 
         }
 
-        WebElement input_file = driver.findElement(By.cssSelector("input[type=file]"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", input_file);
-        input_file.sendKeys("C:/Download/Avatar вложения/avatar-2.jpg");
+        // Загрузка новой аватарки. Проверяем, что загрузка выполнилась корректно
+
+        // jpg
+        WebElement input_file_jpg = driver.findElement(By.cssSelector("input[type=file]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", input_file_jpg);
+        input_file_jpg.sendKeys("C:/Download/Avatar вложения/avatar-2.jpg");
         driver.findElement(By.cssSelector("[type=submit]")).click();
+
+        WebElement alertDialog_jpg = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content")));
+        String alertDialogText_jpg = alertDialog_jpg.getText();
+        System.out.println(alertDialogText_jpg + " .jpg");
+        Assert.assertEquals(alertDialogText_jpg, "Фотография успешно загружена");
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        driver.findElement(By.cssSelector(".avatar")).click();
+        driver.findElement(By.cssSelector(".dialog-buttons button:nth-child(2)")).click();
+        driver.findElement(By.cssSelector(".app > div:last-child .dialog-buttons button:first-child")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content")));
+        driver.findElement(By.cssSelector(".avatar")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[type=file]")));
+
+        // png
+        WebElement input_file_png = driver.findElement(By.cssSelector("input[type=file]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", input_file_png);
+        input_file_png.sendKeys("C:/Download/Avatar вложения/management.png");
+        driver.findElement(By.cssSelector("[type=submit]")).click();
+
+        WebElement alertDialog_png = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content")));
+        String alertDialogText_png = alertDialog_png.getText();
+        System.out.println(alertDialogText_png + " .png");
+        Assert.assertEquals(alertDialogText_png, "Фотография успешно загружена");
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        driver.findElement(By.cssSelector(".avatar")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".avatar-actions-dialog__image")));
+        driver.findElement(By.cssSelector(".dialog-buttons button:nth-child(2)")).click();
+        driver.findElement(By.cssSelector(".app > div:last-child .dialog-buttons button:first-child")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content")));
+        driver.findElement(By.cssSelector(".avatar")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[type=file]")));
+
+        // gif
+        WebElement input_file_gif = driver.findElement(By.cssSelector("input[type=file]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", input_file_gif);
+        input_file_gif.sendKeys("C:/Download/Avatar вложения/avatar18.gif");
+        driver.findElement(By.cssSelector("[type=submit]")).click();
+
+        WebElement alertDialog_gif = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content")));
+        String alertDialogText_gif = alertDialog_gif.getText();
+        System.out.println(alertDialogText_gif + " .gif");
+        Assert.assertEquals(alertDialogText_gif, "Фотография успешно загружена");
 
     }
 

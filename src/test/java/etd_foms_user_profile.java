@@ -144,37 +144,95 @@ public class etd_foms_user_profile {
         // Добавление дополнительного адреса электронной почты и телефона
 
         // проверяем наличие дополнительных номеров и удаляем все
-        int count = driver.findElements(By.cssSelector(".user-profile-card-user section:nth-child(3) > div:last-child > div:first-child .user-profile-card__add > .user-profile-card__item_edit")).size();
+//        String numbersLocator = ".user-profile-card-user section:nth-child(3) > div:last-child > div:first-child .user-profile-card__add > .user-profile-card__item_edit";
+//        int countNumber = driver.findElements(By.cssSelector(numbersLocator)).size();
+//
+//        if (countNumber > 0) {
+//
+//            while (countNumber > 0) {
+//
+//                driver.findElement(By.cssSelector(numbersLocator)).click();
+//                TimeUnit.MILLISECONDS.sleep(400);
+//                driver.findElement(By.cssSelector("._text-red")).click();
+//                TimeUnit.MILLISECONDS.sleep(400);
+//                driver.findElement(By.cssSelector(".dialog-buttons ._text-red")).click();
+//                wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector(numbersLocator), countNumber-1));
+//                countNumber = driver.findElements(By.cssSelector(numbersLocator)).size();
+//
+//            }
+//            System.out.println("Предварительно удалены все дополнительные номера, введенные ранее");
+//        }
+//
+          // добавление нового номера
+//        driver.findElement(By.cssSelector(".user-profile-card-user section:nth-child(3) > div:last-child > div:first-child svg")).click();
+//        WebElement phone = driver.findElement(By.cssSelector("[name=phone]"));
+//        String phoneNumber = "9876543210";
+//        phone.sendKeys(Keys.chord(Keys.HOME));
+//        phone.sendKeys(phoneNumber);
+//        driver.findElement(By.cssSelector("[role=dialog] [type=submit]")).click();
+//        WebElement phoneNumberCreate = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".user-profile-card-user section:nth-child(3) > div:last-child > div:first-child .user-profile-card__item_edit")));
+//        String phoneNumberCreateText = phoneNumberCreate.getText();
+//        System.out.println("Номер нового введенного телефона: " + phoneNumber);
+//        System.out.println("Номер нового отображаемого телефона: " + phoneNumberCreateText);
+//        String phoneNumberCreateTextRaplace = phoneNumberCreateText.replaceAll("\\D+", ""); // использование регулярных выражений для удаления не-цифр
+//        System.out.println("Номер нового отображаемого телефона (только цифры): " + phoneNumberCreateTextRaplace);
+//        Assert.assertEquals("7" + phoneNumber, phoneNumberCreateTextRaplace);
 
-        if (count > 0) {
+        // проверяем наличие дополнительной почты и удаляем все
+//        String emailLocator = ".user-profile-card-user section:nth-child(3) > div:last-child > div:last-child .user-profile-card__add > .user-profile-card__item_edit";
+//        int countEmail = driver.findElements(By.cssSelector(emailLocator)).size();
+//
+//        if (countEmail > 0) {
+//
+//            while (countEmail > 0) {
+//
+//                driver.findElement(By.cssSelector(emailLocator)).click();
+//                TimeUnit.MILLISECONDS.sleep(400);
+//                driver.findElement(By.cssSelector("._text-red")).click();
+//                TimeUnit.MILLISECONDS.sleep(400);
+//                driver.findElement(By.cssSelector(".dialog-buttons ._text-red")).click();
+//                wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector(emailLocator), countEmail-1));
+//                countEmail = driver.findElements(By.cssSelector(emailLocator)).size();
+//
+//            }
+//            System.out.println("Предварительно удалена вся дополнительная почта, введенная ранее");
+//        }
+//
+//        // добавление новой почты
+//        driver.findElement(By.cssSelector(".user-profile-card-user section:nth-child(3) > div:last-child > div:last-child svg")).click();
+//        WebElement email = driver.findElement(By.cssSelector("[name=email]"));
+//        String emailNew = "test@otr.ru";
+//        email.sendKeys(emailNew);
+//        driver.findElement(By.cssSelector("[role=dialog] [type=submit]")).click();
+//        WebElement emailNewCreate = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".user-profile-card-user section:nth-child(3) > div:last-child > div:last-child .user-profile-card__item_edit")));
+//        String emailNewCreateText = emailNewCreate.getText();
+//        System.out.println("Адрес новой электронной почты: " + emailNew);
+//        System.out.println("Адрес новой отображаемой электронной почты: " + emailNewCreateText);
+//        Assert.assertEquals(emailNew, emailNewCreateText);
 
-            while (count > 0) {
+        // Проверка отображения блока "Сведения об организации". Данные приходят корректно
+//        List<WebElement> organization = driver.findElements(By.cssSelector(".user-profile-card-user section:nth-child(4) .two-columns-table__content"));
+//
+//        for (int i = 0; i < organization.size(); i++) {
+//            String organizationInfo = organization.get(i).getAttribute("textContent");
+//            System.out.println(organizationInfo);
+//            Assert.assertFalse(organizationInfo.isEmpty());
+//
+//        }
 
-                driver.findElement(By.cssSelector(".user-profile-card-user section:nth-child(3) > div:last-child > div:first-child .user-profile-card__add > .user-profile-card__item_edit")).click();
-                TimeUnit.MILLISECONDS.sleep(400);
-                driver.findElement(By.cssSelector("._text-red")).click();
-                TimeUnit.MILLISECONDS.sleep(400);
-                driver.findElement(By.cssSelector(".dialog-buttons ._text-red")).click();
-                TimeUnit.MILLISECONDS.sleep(2000);
-                count = driver.findElements(By.cssSelector(".user-profile-card-user section:nth-child(3) > div:last-child > div:first-child .user-profile-card__add > .user-profile-card__item_edit")).size();
+        // Проверка вкладки "Полномочия". Данные приходят корректно. Список НЕ пуст
 
-            }
-            System.out.println("Предварительно удалены все дополнительные номера, введенные ранее");
+        driver.findElement(By.cssSelector(".user-profile-tabs [role=tablist] button:nth-child(2)")).click();
+        Assert.assertTrue(isElementPresent(driver, By.cssSelector(".MuiTableCell-alignCenter"))); // Проверка отсутствия локатора "Список пуст"
+
+        List<WebElement> permission = driver.findElements(By.cssSelector("tbody .MuiTableCell-alignLeft"));
+
+        for (int i = 0; i < permission.size(); i++) {
+            String permissionInfo = permission.get(i).getAttribute("textContent");
+            System.out.println(permissionInfo);
+            Assert.assertFalse(permissionInfo.isEmpty());
+
         }
-
-        driver.findElement(By.cssSelector(".user-profile-card-user section:nth-child(3) > div:last-child > div:first-child svg")).click();
-        WebElement phone = driver.findElement(By.cssSelector("[name=phone]"));
-        String phoneNumber = "9876543210";
-        phone.sendKeys(Keys.chord(Keys.HOME));
-        phone.sendKeys(phoneNumber);
-        driver.findElement(By.cssSelector("[role=dialog] [type=submit]")).click();
-        WebElement phoneNumberCreate = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".user-profile-card__item_edit")));
-        String phoneNumberCreateText = phoneNumberCreate.getText();
-        System.out.println("Номер нового введенного телефона: " + phoneNumber);
-        System.out.println("Номер нового отображаемого телефона: " + phoneNumberCreateText);
-        String phoneNumberCreateTextRaplace = phoneNumberCreateText.replaceAll("\\D+", ""); // использование регулярных выражений для удаления не-цифр
-        System.out.println("Номер нового отображаемого телефона (только цифры): " + phoneNumberCreateTextRaplace);
-        Assert.assertEquals("7" + phoneNumber, phoneNumberCreateTextRaplace);
 
     }
 

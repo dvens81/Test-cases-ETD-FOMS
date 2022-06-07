@@ -29,60 +29,37 @@ public class etd_foms_navigation_iframe {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-    }
-
-    //Ожидание нового окна. Возвращает идентификатор нового окна
-    public ExpectedCondition<String> anyWindowOtherThan(Set<String> oldWindows) {
-        return new ExpectedCondition<String>() {
-            public String apply(WebDriver driver) {
-                Set<String> handles = driver.getWindowHandles();
-                handles.removeAll(oldWindows);
-                return handles.size() > 0 ? handles.iterator().next() : null;
-            }
-        };
     }
 
     @Test
     public void myFirstTest() throws InterruptedException {
-        driver.get("https://d-customer-balancer-iam-proxy-01.foms.novalocal/etd-front/");
-        driver.findElement(By.cssSelector("#details-button")).click();
-        driver.findElement(By.cssSelector("#proceed-link")).click();
-        driver.findElement(By.cssSelector("#details-button")).click();
-        driver.findElement(By.cssSelector("#proceed-link")).click();
-        driver.findElement(By.cssSelector("#zocial-esia")).click();
-        driver.findElement(By.cssSelector("#login")).sendKeys("ajurba@mail.ru");
-        driver.findElement(By.cssSelector("#password")).sendKeys("Zaxscdvfbg321-");
-        driver.findElement(By.cssSelector("#loginByPwdButton .ui-button-text")).click();
-        driver.findElement(By.cssSelector("button:nth-child(2) .name")).click();
+        driver.get("http://black:8080/");
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".navigation-tree__item-name")));
 
-        driver.findElement(By.cssSelector(".menu-nav [data-testid=MenuIcon]")).click();
-
-        List<WebElement> menu = driver.findElements(By.cssSelector(".treeItem-level-0 h6"));
+        List<WebElement> menu = driver.findElements(By.cssSelector(".navigation-tree__item-name"));
 
         for (int i = 0; i < menu.size(); i++) {
-            menu = driver.findElements(By.cssSelector(".treeItem-level-0 h6"));
+            menu = driver.findElements(By.cssSelector(".navigation-tree__item-name"));
             String s = menu.get(i).getAttribute("textContent");
             System.out.println("textContent = " + s);
 
-            if (s.equals("РМП")) {
+            if (s.equals("Тест")) {
                 menu.get(i).click();
                 break;
             }
 
         }
 
-        List<WebElement> links = driver.findElements(By.cssSelector("локатор"));
+        List<WebElement> links = driver.findElements(By.cssSelector(".navigation-second__right-items [ng-bind='$item.name']"));
         for (int i = 0; i < links.size(); i++) {
-            String originalWindow = driver.getWindowHandle();
-            Set<String> existingWindows = driver.getWindowHandles();
             links.get(i).click();
-            String newWindow = wait.until(anyWindowOtherThan(existingWindows));
-            driver.switchTo().window(newWindow);
-            driver.close();
-            driver.switchTo().window(originalWindow);
+            WebElement iframe = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("iframe")));
+            driver.switchTo().frame(iframe);
+            driver.switchTo().defaultContent();
+
         }
 
 

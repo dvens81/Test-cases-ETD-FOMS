@@ -9,12 +9,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 // Виджеты. Избранное. Добавление и удаление реестров.
-// Проверка: количество добавленных реестров в избранное равно количеству отображаемых реестров в виджете Избранное
+// Проверки:
+// 1) количество добавленных реестров совпадает с количеством реестров, отображаемых на главной странице в блоке "Избранное"
+// 2) количество реестров, отображаемых на главной странице в блоке "Избранное", совпадает с количеством реестров в виджете "Избранное"
+// 3) после удаления всех реестров из избранного, на главной странице отсутствуют реестры в блоке "Избранное"
 
 public class etd_foms_favourites {
 
@@ -26,8 +30,8 @@ public class etd_foms_favourites {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
     }
 
@@ -39,7 +43,7 @@ public class etd_foms_favourites {
     public void myFirstTest() throws InterruptedException {
         driver.get("http://black:8080/");
 
-        // Проверяем, если есть реестры в Избранном, то удаляем
+        // Проверяем, если есть реестры в блоке "Избранное" на главной странице, то удаляем их
         int count = driver.findElements(By.cssSelector("._widget-favorites li [ng-bind='$item.name']")).size();
 
         if (count > 0) {
@@ -48,6 +52,9 @@ public class etd_foms_favourites {
 
             String numbersLocator = "[title='Убрать из избранного']";
             int favouritesDel = driver.findElements(By.cssSelector(numbersLocator)).size();
+
+            System.out.println("Количество удаленных реестров из блока \"Избранное\" на главной странице: " + favouritesDel);
+            System.out.println("--------------------------");
 
             while (favouritesDel > 0) {
                 driver.findElement(By.cssSelector(numbersLocator)).click();
@@ -59,12 +66,13 @@ public class etd_foms_favourites {
 
         }
 
+        // Добавление реестров в избранное
         List<WebElement> menu = driver.findElements(By.cssSelector(".navigation-tree__item-name"));
 
         for (int i = 0; i < menu.size(); i++) {
             menu = driver.findElements(By.cssSelector(".navigation-tree__item-name"));
             String s = menu.get(i).getAttribute("textContent");
-            System.out.println("textContent = " + s);
+            //System.out.println("textContent = " + s);
 
             if (s.equals("Тест")) {
                 menu.get(i).click();
@@ -77,24 +85,35 @@ public class etd_foms_favourites {
 
         for (int i = 0; i < favouritesAdd.size(); i++) {
             favouritesAdd.get(i).click();
+            TimeUnit.MILLISECONDS.sleep(500);
 
         }
+        TimeUnit.MILLISECONDS.sleep(1500);
         driver.get("http://black:8080/");
 
+        // Проверяем, что количество добавленных реестров совпадает с количеством реестров, отображаемых на главной странице в блоке "Избранное"
         List<WebElement> favouritesMenu = driver.findElements(By.cssSelector("._widget-favorites li [ng-bind='$item.name']"));
 
-        // Проверяем, что количество добавленных реестров, совпадает с колличеством реестров, отображаемых на главной странице в блоке "Избранное"
+        System.out.println("Количество добавленных реестров: " + favouritesAdd.size());
+        System.out.println("Количество реестров, отображаемых на главной странице в блоке \"Избранное\": " + favouritesMenu.size());
+        System.out.println("--------------------------");
+
         Assert.assertTrue(favouritesAdd.size() == favouritesMenu.size());
 
+        // Проверяем, что количество реестров, отображаемых на главной странице в блоке "Избранное", совпадает с количеством реестров в виджете "Избранное"
         driver.findElement(By.cssSelector("[ng-href='/#/menu']")).click();
         driver.findElement(By.cssSelector("[ng-if='$navigation.hasFavorites()'] span")).click();
 
         String numbersLocator = "[title='Убрать из избранного']";
         int favouritesDel = driver.findElements(By.cssSelector(numbersLocator)).size();
 
-        // Проверяем, что количество реестров, отображаемых на главной странице в блоке "Избранное", совпадает с колличеством реестров в виджете "Избранное"
+        System.out.println("Количество реестров, отображаемых на главной странице в блоке \"Избранное\": " + favouritesMenu.size());
+        System.out.println("Количество реестров в виджете \"Избранное\": " + favouritesDel);
+        System.out.println("--------------------------");
+
         Assert.assertTrue(favouritesDel == favouritesMenu.size());
 
+        // Удаляем все реестры из избранного. Проверяем, что на главной странице отсутствуют реестры в блоке "Избранное"
         while (favouritesDel > 0) {
             driver.findElement(By.cssSelector(numbersLocator)).click();
             wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector(numbersLocator), favouritesDel - 1));
@@ -103,7 +122,9 @@ public class etd_foms_favourites {
         }
         driver.get("http://black:8080/");
 
-        // Проверяем, что на главной странице отсутствуют реестры в блоке "Избранное"
+        int count2 = driver.findElements(By.cssSelector("._widget-favorites li [ng-bind='$item.name']")).size();
+        System.out.println("На главной странице отсутствуют реестры в блоке \"Избранное\": " + count2);
+
         Assert.assertTrue(isElementPresent(driver, By.cssSelector("._widget-favorites li [ng-bind='$item.name']")));
 
 

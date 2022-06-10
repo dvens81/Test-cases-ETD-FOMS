@@ -30,8 +30,8 @@ public class etd_foms_favourites {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
     }
 
@@ -62,7 +62,7 @@ public class etd_foms_favourites {
                 favouritesDel = driver.findElements(By.cssSelector(numbersLocator)).size();
 
             }
-            driver.get("http://black:8080/");
+            driver.findElement(By.cssSelector(".ion-ios-home")).click();
 
         }
 
@@ -89,7 +89,7 @@ public class etd_foms_favourites {
 
         }
         TimeUnit.MILLISECONDS.sleep(1500);
-        driver.get("http://black:8080/");
+        driver.findElement(By.cssSelector(".ion-ios-home")).click();
 
         // Проверяем, что количество добавленных реестров совпадает с количеством реестров, отображаемых на главной странице в блоке "Избранное"
         List<WebElement> favouritesMenu = driver.findElements(By.cssSelector("._widget-favorites li [ng-bind='$item.name']"));
@@ -101,7 +101,7 @@ public class etd_foms_favourites {
         Assert.assertTrue(favouritesAdd.size() == favouritesMenu.size());
 
         // Проверяем, что количество реестров, отображаемых на главной странице в блоке "Избранное", совпадает с количеством реестров в виджете "Избранное"
-        driver.findElement(By.cssSelector("[ng-href='/#/menu']")).click();
+        driver.findElement(By.cssSelector("[ng-href='/#/menu?view=kvuz3ikj']")).click();
         driver.findElement(By.cssSelector("[ng-if='$navigation.hasFavorites()'] span")).click();
 
         String numbersLocator = "[title='Убрать из избранного']";
@@ -120,7 +120,7 @@ public class etd_foms_favourites {
             favouritesDel = driver.findElements(By.cssSelector(numbersLocator)).size();
 
         }
-        driver.get("http://black:8080/");
+        driver.findElement(By.cssSelector(".ion-ios-home")).click();
 
         int count2 = driver.findElements(By.cssSelector("._widget-favorites li [ng-bind='$item.name']")).size();
         System.out.println("На главной странице отсутствуют реестры в блоке \"Избранное\": " + count2);

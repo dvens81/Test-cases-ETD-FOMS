@@ -4,17 +4,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-// Поиск по меню. Поиск реестров. Переход в подсистему по результатам поиска. Открытие реестра по презультатам поиска
+// Поиск по меню. Поиск реестров. Переход в подсистему/подменю по результатам поиска. Открытие реестра по результатам поиска
+// Проверки:
+// 1) При переходе в подсистему/подменю, по результатам поиска, присутствуют искомые реестры
+// 2) Проверяем корректное открытие реестра по результатам поиска
 
 public class etd_foms_search {
 
@@ -43,7 +43,7 @@ public class etd_foms_search {
         driver.findElement(By.cssSelector("input[type=text]")).sendKeys("сайт 1");
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".bc__item-link"))).click();
 
-        // Проверяем, что в подсистеме/подменю присутствуют искомые реестры
+        // Проверяем, что, при переходе в подсистему/подменю, по результатам поиска, присутствуют искомые реестры
         isElementPresent(driver, By.cssSelector("[ng-click='$navigation.tree.itemSelect($item, $event)']"));
 
         driver.findElement(By.cssSelector("input[type=text]")).sendKeys("сайт 1");

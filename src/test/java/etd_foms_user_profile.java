@@ -91,14 +91,13 @@ public class etd_foms_user_profile {
         String alertDialogText_jpg = alertDialog_jpg.getText();
         System.out.println(alertDialogText_jpg + " .jpg");
         Assert.assertEquals(alertDialogText_jpg, "Фотография успешно загружена");
-        TimeUnit.MILLISECONDS.sleep(6000);
+        TimeUnit.MILLISECONDS.sleep(3000);
 
         driver.findElement(By.cssSelector(".avatar")).click();
         driver.findElement(By.cssSelector(".dialog-buttons button:nth-child(2)")).click();
         driver.findElement(By.cssSelector(".app > div:last-child .dialog-buttons button:first-child")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content")));
         driver.findElement(By.cssSelector(".avatar")).click();
-        TimeUnit.MILLISECONDS.sleep(2000);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[type=file]")));
 
         // png
@@ -111,7 +110,7 @@ public class etd_foms_user_profile {
         String alertDialogText_png = alertDialog_png.getText();
         System.out.println(alertDialogText_png + " .png");
         Assert.assertEquals(alertDialogText_png, "Фотография успешно загружена");
-        TimeUnit.MILLISECONDS.sleep(6000);
+        TimeUnit.MILLISECONDS.sleep(3000);
 
         driver.findElement(By.cssSelector(".avatar")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".avatar-actions-dialog__image")));
@@ -119,7 +118,6 @@ public class etd_foms_user_profile {
         driver.findElement(By.cssSelector(".app > div:last-child .dialog-buttons button:first-child")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content")));
         driver.findElement(By.cssSelector(".avatar")).click();
-        TimeUnit.MILLISECONDS.sleep(2000);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[type=file]")));
 
         // gif
@@ -132,7 +130,7 @@ public class etd_foms_user_profile {
         String alertDialogText_gif = alertDialog_gif.getText();
         System.out.println(alertDialogText_gif + " .gif");
         Assert.assertEquals(alertDialogText_gif, "Фотография успешно загружена");
-        TimeUnit.MILLISECONDS.sleep(7000);
+        TimeUnit.MILLISECONDS.sleep(3000);
 
         // Загрузка аватарки размером более 10Мб. Проверка, что аватарка не загружается из-за ограничения максимального размера файла
         driver.findElement(By.cssSelector(".avatar")).click();
@@ -143,7 +141,7 @@ public class etd_foms_user_profile {
 
         WebElement input_file_size = driver.findElement(By.cssSelector("input[type=file]"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", input_file_size);
-        TimeUnit.MILLISECONDS.sleep(2000);
+        TimeUnit.MILLISECONDS.sleep(1000);
         input_file_size.sendKeys("C:/Download/Avatar вложения/Тест вложений большого объема/test.jpg");
 
         WebElement alertDialog_size = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-dialog-content li")));
@@ -168,7 +166,6 @@ public class etd_foms_user_profile {
                 driver.findElement(By.cssSelector("._text-red")).click();
                 TimeUnit.MILLISECONDS.sleep(400);
                 driver.findElement(By.cssSelector(".dialog-buttons ._text-red")).click();
-                TimeUnit.MILLISECONDS.sleep(1500);
                 wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector(numbersLocator), countNumber - 1));
                 countNumber = driver.findElements(By.cssSelector(numbersLocator)).size();
 
@@ -204,7 +201,6 @@ public class etd_foms_user_profile {
                 driver.findElement(By.cssSelector("._text-red")).click();
                 TimeUnit.MILLISECONDS.sleep(400);
                 driver.findElement(By.cssSelector(".dialog-buttons ._text-red")).click();
-                TimeUnit.MILLISECONDS.sleep(1500);
                 wait.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector(emailLocator), countEmail - 1));
                 countEmail = driver.findElements(By.cssSelector(emailLocator)).size();
 

@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 // 2) количество реестров, отображаемых на главной странице в блоке "Избранное", совпадает с количеством реестров в виджете "Избранное"
 // 3) после удаления всех реестров из избранного, на главной странице отсутствуют реестры в блоке "Избранное"
 
-public class etd_foms_favourites {
+public class local_etd_foms_favourites {
 
     private WebDriverWait wait;
     private WebDriver driver;

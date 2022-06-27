@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 // 1) При переходе в подсистему/подменю, по результатам поиска, присутствуют искомые реестры
 // 2) Проверяем корректное открытие реестра по результатам поиска
 
-public class etd_foms_search {
+public class local_etd_foms_search {
 
     private WebDriverWait wait;
     private WebDriver driver;

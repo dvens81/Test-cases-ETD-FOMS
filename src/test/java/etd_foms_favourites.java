@@ -30,8 +30,8 @@ public class etd_foms_favourites {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
     }
 
@@ -91,7 +91,7 @@ public class etd_foms_favourites {
         }
 
         List<WebElement> favouritesAdd = driver.findElements(By.cssSelector(".subSystemStack__items [data-testid=StarIcon]"));
-        int favouritesAddNumbers = 2;
+        int favouritesAddNumbers = 3;
 
         for (int i = 0; i < favouritesAddNumbers; i++) {
             favouritesAdd.get(i).click();
@@ -119,6 +119,7 @@ public class etd_foms_favourites {
         System.out.println("Количество реестров, отображаемых на главной странице в блоке \"Избранное\": " + favouritesMenu.size());
         System.out.println("Количество реестров в виджете \"Избранное\": " + favouritesDel);
         System.out.println("--------------------------");
+        System.out.println("Количество удаленных реестров из виджета \"Избранное\": " + favouritesDel);
 
         Assert.assertTrue(favouritesDel == favouritesMenu.size());
 

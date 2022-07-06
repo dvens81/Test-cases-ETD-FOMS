@@ -14,13 +14,15 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-// Проверка доработатки шрифтов и цвета в ЕТД согласно макету figma.com UI_KIT
+// Проверка доработки шрифтов и цвета в ЕТД согласно макету figma.com UI_KIT
 // https://www.figma.com/file/O0z2FQspwRfNSfPypw1Uvz/UI_KIT.-v.-1.0?node-id=299%3A53875
-//Шрифт и цвет шапки - ок
-//Шрифт заголовков виджетов
-//Шрифт вкладок
-//Шрифт навигации
-//Шрифт "хлебных крошек"
+//
+// Проверки:
+// 1) Шрифт и цвет текста шапки
+// 2) Шрифт заголовков виджетов
+// 3) Шрифт навигации. Подсистем и реестров
+// 4) Шрифт вкладок
+// 5) Шрифт "хлебных крошек"
 
 public class etd_foms_font_color {
 
@@ -58,9 +60,25 @@ public class etd_foms_font_color {
         driver.findElement(By.cssSelector("button:nth-child(2) .name")).click();
         TimeUnit.MILLISECONDS.sleep(4000);
 
+        // Проверка настройки "Показывать навигационную цепочку"
+
+        driver.findElement(By.cssSelector(".user-profile__icon")).click();
+        TimeUnit.MILLISECONDS.sleep(400);
+        driver.findElement(By.cssSelector(".MuiMenu-list li:nth-child(3) .dropdown__item")).click();
+        TimeUnit.MILLISECONDS.sleep(400);
+        driver.findElement(By.cssSelector("#showBreadcrumbs")).click();
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        if (isElementPresent(driver, By.cssSelector("#showBreadcrumbs[value=false]"))) {
+
+            driver.findElement(By.cssSelector("#showBreadcrumbs[value=false]")).click();
+            TimeUnit.MILLISECONDS.sleep(1000);
+        }
+        driver.findElement(By.cssSelector("[data-testid=HomeIcon]")).click();
+
         // Шрифт и цвет шапки
 
-        String fontKit = "RobotoMedium";
+        String fontTitleKit = "RobotoMedium";
         String colorKit = "rgba(0, 101, 177, 1)";
 
         // Шрифт заголовка
@@ -75,11 +93,11 @@ public class etd_foms_font_color {
             //System.out.println(word);
 
             if (word.equals("RobotoMedium,")) {
-                fontLogoTitle = fontKit;
+                fontLogoTitle = fontTitleKit;
                 System.out.println("Шапка. Шрифт элемента заголовка совпадает со шрифтом, согласно макету: " + fontLogoTitle);
             }
         }
-        Assert.assertEquals(fontLogoTitle, fontKit);
+        Assert.assertEquals(fontLogoTitle, fontTitleKit);
 
         // Цвет заголовка
         String colorTitle = driver.findElement(By.cssSelector(".logo__title")).getCssValue("color");
@@ -99,17 +117,144 @@ public class etd_foms_font_color {
             //System.out.println(word);
 
             if (word.equals("RobotoMedium,")) {
-                fontLogoUser = fontKit;
+                fontLogoUser = fontTitleKit;
                 System.out.println("Шапка. Шрифт элемента пользователя совпадает со шрифтом, согласно макету: " + fontLogoUser);
             }
         }
-        Assert.assertEquals(fontLogoUser, fontKit);
+        Assert.assertEquals(fontLogoUser, fontTitleKit);
 
         // Цвет пользователя
         String colorUser = driver.findElement(By.cssSelector(".user-select button")).getCssValue("color");
         System.out.println("Шапка. Цвет элемента пользователя: " + colorUser);
         Assert.assertEquals(colorUser, colorKit);
         System.out.println("Шапка. Цвет элемента пользователя совпадает с цветом, согласно макету: " + colorKit);
+
+        //Шрифт заголовков виджетов
+
+        String fontWidgetKit = "Roboto";
+
+        List<WebElement> widgets = driver.findElements(By.cssSelector(".widget-title"));
+
+        for (int i = 0; i < widgets.size(); i++) {
+
+            // Шрифт виджета
+            String textWidget = widgets.get(i).getText();
+
+            String fontWidget = widgets.get(i).getCssValue("font");
+            System.out.println("Виджеты. Текст элемента: " + textWidget);
+            System.out.println("Виджеты. Шрифт элемента: " + fontWidget);
+
+            String[] words3 = fontWidget.split(" ");
+            for (String word : words3) {
+                //System.out.println(word);
+
+                if (word.equals("Roboto,")) {
+                    fontWidget = fontWidgetKit;
+                    System.out.println("Виджеты. Шрифт элемента виджета совпадает со шрифтом, согласно макету: " + fontWidget);
+                }
+            }
+            Assert.assertEquals(fontWidget, fontWidgetKit);
+        }
+
+        //Шрифт навигации
+
+        List<WebElement> menu = driver.findElements(By.cssSelector(".subsystem-widget"));
+
+        for (int i = 0; i < menu.size(); i++) {
+            menu = driver.findElements(By.cssSelector(".subsystem-widget"));
+            String s = menu.get(i).getAttribute("textContent");
+            //System.out.println("textContent = " + s);
+
+            if (s.equals("РМП")) {
+                menu.get(i).click();
+                break;
+            }
+
+        }
+
+        //Шрифт подсистем
+        String fontMenuKit = "RobotoMedium";
+
+        String textMenu = driver.findElement(By.cssSelector(".MuiTypography-h6")).getText();
+
+        String fontMenu = driver.findElement(By.cssSelector(".MuiTypography-h6")).getCssValue("font-family");
+        System.out.println("Меню навигации. Текст элемента меню: " + textMenu);
+        System.out.println("Меню навигации. Шрифт элемента меню: " + fontMenu);
+
+        String[] words3 = fontMenu.split(" ");
+        for (String word : words3) {
+            //System.out.println(word);
+
+            if (word.equals("RobotoMedium,")) {
+                fontMenu = fontMenuKit;
+                System.out.println("Меню навигации. Шрифт элемента меню совпадает со шрифтом, согласно макету: " + fontMenu);
+            }
+        }
+        Assert.assertEquals(fontMenu, fontMenuKit);
+
+        //Шрифт реестров
+        String fontRegistryKit = "Roboto";
+
+        String textRegistry = driver.findElement(By.cssSelector(".bookmark__text")).getText();
+
+        String fontRegistry = driver.findElement(By.cssSelector(".bookmark__text")).getCssValue("font-family");
+        System.out.println("Меню навигации. Текст элемента реестра: " + textRegistry);
+        System.out.println("Меню навигации. Шрифт элемента реестра: " + fontRegistry);
+
+        String[] words4 = fontRegistry.split(" ");
+        for (String word : words4) {
+            //System.out.println(word);
+
+            if (word.equals("Roboto,")) {
+                fontRegistry = fontRegistryKit;
+                System.out.println("Меню навигации. Шрифт элемента реестра совпадает со шрифтом, согласно макету: " + fontRegistry);
+            }
+        }
+        Assert.assertEquals(fontRegistry, fontRegistryKit);
+
+        //Шрифт вкладок
+
+        driver.findElement(By.cssSelector(".bookmark__text")).click();
+        TimeUnit.MILLISECONDS.sleep(10000);
+        String fontTabKit = "RobotoMedium";
+
+        String textTab = driver.findElement(By.cssSelector(".customTab__label")).getText();
+
+        String fontTab = driver.findElement(By.cssSelector(".customTab__label")).getCssValue("font");
+        System.out.println("Вкладки. Текст элемента вкладки: " + textTab);
+        System.out.println("Вкладки. Шрифт элемента вкладки: " + fontTab);
+
+        String[] words5 = fontTab.split(" ");
+        for (String word : words5) {
+            //System.out.println(word);
+
+            if (word.equals("RobotoMedium,")) {
+                fontTab = fontTabKit;
+                System.out.println("Вкладки. Шрифт элемента вкладки совпадает со шрифтом, согласно макету: " + fontTab);
+            }
+        }
+        Assert.assertEquals(fontTab, fontTabKit);
+
+        //Шрифт "хлебных крошек"
+
+        String fontBreadcrumbsKit = "Roboto";
+
+        String textBreadcrumbs = driver.findElement(By.cssSelector(".breadcrumbs__item_last")).getText();
+
+        String fontBreadcrumbs = driver.findElement(By.cssSelector(".breadcrumbs__item_last")).getCssValue("font-family");
+        System.out.println("Хлебные крошки. Текст элемента цепочки: " + textBreadcrumbs);
+        System.out.println("Хлебные крошки. Шрифт элемента цепочки: " + fontBreadcrumbs);
+
+        String[] words6 = fontBreadcrumbs.split(" ");
+        for (String word : words6) {
+            //System.out.println(word);
+
+            if (word.equals("Roboto,")) {
+                fontBreadcrumbs = fontBreadcrumbsKit;
+                System.out.println("Хлебные крошки. Шрифт элемента цепочки совпадает со шрифтом, согласно макету: " + fontBreadcrumbs);
+            }
+        }
+        Assert.assertEquals(fontBreadcrumbs, fontBreadcrumbsKit);
 
     }
 

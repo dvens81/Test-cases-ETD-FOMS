@@ -14,6 +14,14 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+// АРМ пользователя
+
+// Проверки:
+// 1) Проверка "Напечатать отчет"
+// 2) Проверка "Написать в техподдержку". Прикрепление файла "Проверка требований к АРМ.docx"
+// 3) Проверка корректности заполнения окна с подсказкой "Рекомендуемые версии браузеров"
+// 4) Проверка корректности заполнения окна КриптоПро ЭЦП Browser плагин с подсказкой "Рекомендованные версии"
+
 public class etd_foms_arm {
 
     private WebDriverWait wait;
@@ -27,10 +35,6 @@ public class etd_foms_arm {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-    }
-
-    boolean isElementPresent(WebDriver driver, By locator) {
-        return driver.findElements(locator).size() > 0;
     }
 
     @Test
@@ -53,7 +57,7 @@ public class etd_foms_arm {
         driver.findElement(By.cssSelector(".user-profile__icon")).click();
         TimeUnit.MILLISECONDS.sleep(400);
         driver.findElement(By.cssSelector(".MuiMenu-list li:nth-child(2) .dropdown__item")).click();
-        TimeUnit.MILLISECONDS.sleep(10000);
+        TimeUnit.MILLISECONDS.sleep(1000);
 
         // Проверка "Напечатать отчет"
 
@@ -82,13 +86,13 @@ public class etd_foms_arm {
         TimeUnit.MILLISECONDS.sleep(1000);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[role=dialog]")));
 
-        String h = "Рекомендуемые версии браузеров";
+        String h1 = "Рекомендуемые версии браузеров";
         String li1 = "Chromium GOST Версия 86.0.4240.111 и выше";
         String li2 = "Интернет- браузер «Яндекс.Браузер»";
 
-        String hText = driver.findElement(By.cssSelector("[role=dialog] h6")).getText();
-        System.out.println("Заголовок окна с подсказкой \"Рекомендуемые версии браузеров\": " + hText);
-        Assert.assertEquals(h, hText);
+        String h1_Text = driver.findElement(By.cssSelector("[role=dialog] h6")).getText();
+        System.out.println("Заголовок окна с подсказкой \"Рекомендуемые версии браузеров\": " + h1_Text);
+        Assert.assertEquals(h1, h1_Text);
 
         String li1_Text = driver.findElement(By.cssSelector("[role=dialog] ul li:first-child")).getText();
         System.out.println("1) " + li1_Text);
@@ -96,6 +100,26 @@ public class etd_foms_arm {
         System.out.println("2) " + li2_Text);
         Assert.assertEquals(li1, li1_Text);
         Assert.assertEquals(li2, li2_Text);
+        driver.findElement(By.cssSelector("[role=dialog] button")).click();
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        // Проверка корректности заполнения окна КриптоПро ЭЦП Browser плагин с подсказкой "Рекомендованные версии"
+
+        driver.findElement(By.cssSelector(".armcheck_body > div:nth-child(2) > div:first-child > div > div:last-child > div:nth-child(2) p")).click();
+        TimeUnit.MILLISECONDS.sleep(1000);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[role=dialog]")));
+
+        String h2 = "Необходима установка дополнительных плагинов";
+        String plugins = "Должны быть установлены: Плагин КриптоПро ЭЦП Browser plug -in версия 2.0 и выше; " +
+                "Расширение «CryptoPro Extension for CAdES Browser Plug-in» для браузеров «Яндекс.Браузер» или «Chromium GOST Версия 86.0.4240.111» и выше.";
+
+        String h2_Text = driver.findElement(By.cssSelector("[role=dialog] h6")).getText();
+        System.out.println("Заголовок окна с подсказкой \"Необходима установка дополнительных плагинов\": " + h2_Text);
+        Assert.assertEquals(h2, h2_Text);
+
+        String pluginsText = driver.findElement(By.cssSelector(".arm_check-plugins-result")).getText();
+        System.out.println(pluginsText);
+        Assert.assertEquals(plugins, pluginsText);
 
     }
 

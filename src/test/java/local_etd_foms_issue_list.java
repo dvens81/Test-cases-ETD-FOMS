@@ -89,6 +89,48 @@ public class local_etd_foms_issue_list {
         Assert.assertEquals(findText, getTextIssue);
         driver.findElement(By.cssSelector("input[name=search_summary]")).clear();
 
+        // Проверка фильтра по статусам
+            // Проверка неактивности кнопки "Отправить", при нажатии на "Ответить на запрос данных" и "Вернуть в работу" из статусов "Запрос данных" и "Приёмка" соответственно
+
+        driver.get("http://black:8080/#/app/issues");
+        TimeUnit.MILLISECONDS.sleep(7000);
+
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+
+        // Запрос данных
+        String textStatusRequest = "Запрос данных";
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(2) span")).click();
+        String getTextStatusRequest = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)"))).getText();
+        Assert.assertEquals(textStatusRequest, getTextStatusRequest);
+
+            // Ответить на запрос данных
+        driver.findElement(By.cssSelector(".table__body .custom-checkbox")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[ng-if='!checkFKIssues'] a:first-child"))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".modal-content")));
+        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(".modal-footer [disabled=disabled]")));
+
+        driver.get("http://black:8080/#/app/issues");
+        TimeUnit.MILLISECONDS.sleep(7000);
+
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+
+        // Приёмка
+        String textStatusAccept = "Приёмка";
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
+        String getTextStatusAccept = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)"))).getText();
+        Assert.assertEquals(textStatusAccept, getTextStatusAccept);
+
+            // Вернуть в работу
+        driver.findElement(By.cssSelector(".table__body .custom-checkbox")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[ng-if='!checkFKIssues'] a:last-child"))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".modal-content")));
+        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(".modal-footer [disabled=disabled]")));
+
+        driver.get("http://black:8080/#/app/issues");
+        TimeUnit.MILLISECONDS.sleep(7000);
+
     }
 
     @After

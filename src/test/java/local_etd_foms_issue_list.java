@@ -44,7 +44,7 @@ public class local_etd_foms_issue_list {
 
         // Авторизация
         driver.get("http://black:8080/");
-        TimeUnit.MILLISECONDS.sleep(8000);
+        TimeUnit.MILLISECONDS.sleep(20000);
 
         driver.findElement(By.cssSelector(".header__support-dropdown .btn__label")).click();
         TimeUnit.MILLISECONDS.sleep(400);
@@ -64,6 +64,30 @@ public class local_etd_foms_issue_list {
         driver.findElement(By.cssSelector(".table__filters .custom-checkbox")).click();
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".chosen")));
         Assert.assertTrue(isElementPresent9(driver, By.cssSelector(".chosen")));
+
+        // Проверка "Напечатать отчет"
+
+        driver.findElement(By.cssSelector("[ng-click='printIssues()']")).click();
+
+        // При нажатии на кнопку "Печать", при успешном скачивании файла, в DOM меняются стили у элементов
+        String print1 = "[style='display: block;']";
+        String print2 = "[style='visibility: visible;']";
+        // Если стили элементов не изменяются - кнопка не кликабельна, скачивание файла не успешно
+        WebElement locator1 = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(print1)));
+        //System.out.println("print1: " + locator1.getAttribute("outerHTML"));
+        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(print1)));
+
+        WebElement locator2 = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(print2)));
+        //System.out.println("print2: " + locator2.getAttribute("outerHTML"));
+        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(print2)));
+
+        // Проверка поиска обращения по теме
+
+        String findText = "Не открылся реестр 404";
+        driver.findElement(By.cssSelector("input[name=search_summary]")).sendKeys(findText);
+        String getTextIssue = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(5)"))).getText();
+        Assert.assertEquals(findText, getTextIssue);
+        driver.findElement(By.cssSelector("input[name=search_summary]")).clear();
 
     }
 

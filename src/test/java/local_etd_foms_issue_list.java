@@ -12,12 +12,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class local_etd_foms_issue_list {
 
     private WebDriver driver;
     private WebDriverWait wait;
+
+    private void pause() throws InterruptedException {
+        TimeUnit.MILLISECONDS.sleep(8000);
+    }
 
     boolean isElementPresent1(WebDriver driver, By locator) {
         return driver.findElements(locator).size() == 1;
@@ -37,19 +42,19 @@ public class local_etd_foms_issue_list {
             int paginationNumber = Integer.parseInt(paginationText);
 
             for (int i = 0; i <= paginationNumber - 1; i++) {
-                List<WebElement> listOpen = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
-                for (int j = 0; j < listOpen.size(); j++) {
-                    String getTextListOpen = listOpen.get(j).getText();
-                    Assert.assertEquals(textStatus, getTextListOpen);
+                List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
+                for (int j = 0; j < list.size(); j++) {
+                    String getTextList = list.get(j).getText();
+                    Assert.assertEquals(textStatus, getTextList);
                 }
                 driver.findElement(By.cssSelector(".ion-chevron-right")).click();
                 wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
             }
         } else {
-            List<WebElement> listOpen = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
-            for (int j = 0; j < listOpen.size(); j++) {
-                String getTextListOpen = listOpen.get(j).getText();
-                Assert.assertEquals(textStatus, getTextListOpen);
+            List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
+            for (int j = 0; j < list.size(); j++) {
+                String getTextList = list.get(j).getText();
+                Assert.assertEquals(textStatus, getTextList);
             }
         }
     }
@@ -60,8 +65,8 @@ public class local_etd_foms_issue_list {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
     }
 
     @Test
@@ -115,7 +120,7 @@ public class local_etd_foms_issue_list {
 //        driver.findElement(By.cssSelector("input[name=search_summary]")).clear();
 
         // Проверка фильтра по статусам. Проверка статуса каждого обращения на каждой странице pagination
-        // Проверка неактивности кнопки "Отправить", при нажатии на "Ответить на запрос данных" и "Вернуть в работу" из статусов "Запрос данных" и "Приёмка" соответственно
+            // Проверка неактивности кнопки "Отправить", при нажатии на "Ответить на запрос данных" и "Вернуть в работу" из статусов "Запрос данных" и "Приёмка" соответственно
 
 //        driver.get("http://black:8080/#/app/issues");
 //        TimeUnit.MILLISECONDS.sleep(7000);
@@ -131,7 +136,7 @@ public class local_etd_foms_issue_list {
         checkStatus(textStatusOpen);
 
         driver.get("http://black:8080/#/app/issues");
-        TimeUnit.MILLISECONDS.sleep(7000);
+        pause();
 
         driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
@@ -144,10 +149,9 @@ public class local_etd_foms_issue_list {
         checkStatus(textStatusRequest);
 
         driver.get("http://black:8080/#/app/issues");
-        TimeUnit.MILLISECONDS.sleep(7000);
+        pause();
 
             // Ответить на запрос данных
-
         driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
 
@@ -160,25 +164,84 @@ public class local_etd_foms_issue_list {
         Assert.assertTrue(isElementPresent1(driver, By.cssSelector(".modal-footer [disabled=disabled]")));
 
         driver.get("http://black:8080/#/app/issues");
-        TimeUnit.MILLISECONDS.sleep(7000);
+        pause();
 
         driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
 
-//        // Приёмка
-//        String textStatusAccept = "Приёмка";
-//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
-//        String getTextStatusAccept = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)"))).getText();
-//        Assert.assertEquals(textStatusAccept, getTextStatusAccept);
-//
-//            // Вернуть в работу
-//        driver.findElement(By.cssSelector(".table__body .custom-checkbox")).click();
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[ng-if='!checkFKIssues'] a:last-child"))).click();
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".modal-content")));
-//        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(".modal-footer [disabled=disabled]")));
-//
-//        driver.get("http://black:8080/#/app/issues");
-//        TimeUnit.MILLISECONDS.sleep(7000);
+        // Анализ
+        String textStatusAnalysis = "Анализ";
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(3) span")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+
+        checkStatus(textStatusAnalysis);
+
+        driver.get("http://black:8080/#/app/issues");
+        pause();
+
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+
+        // Приёмка
+        String textStatusAccept = "Приёмка";
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+
+        checkStatus(textStatusAccept);
+
+        driver.get("http://black:8080/#/app/issues");
+        pause();
+
+            // Вернуть в работу
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+
+        driver.findElement(By.cssSelector(".table__body .custom-checkbox")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[ng-if='!checkFKIssues'] a:last-child"))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".modal-content")));
+        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(".modal-footer [disabled=disabled]")));
+
+        driver.get("http://black:8080/#/app/issues");
+        pause();
+
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+
+        // Проверка фильтра по статусам. Выбор нескольких статусов одновременно. Проверка статуса каждого обращения на каждой странице pagination
+
+        String textStatusMultiSelectRequest = "Запрос данных";
+        String textStatusMultiSelectAccept = "Приёмка";
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(2) span")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+
+        if (isElementPresent1(driver, By.cssSelector(".pagination [ng-bind='$table.pagination.lastPage']"))) {
+            String paginationText = driver.findElement(By.cssSelector(".pagination [ng-bind='$table.pagination.lastPage']")).getText();
+            int paginationNumber = Integer.parseInt(paginationText);
+
+            for (int i = 0; i <= paginationNumber - 1; i++) {
+                List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
+                for (int j = 0; j < list.size(); j++) {
+                    String getTextList = list.get(j).getText();
+                    Assert.assertTrue(Objects.equals(getTextList, textStatusMultiSelectRequest) || Objects.equals(getTextList, textStatusMultiSelectAccept));
+                }
+                driver.findElement(By.cssSelector(".ion-chevron-right")).click();
+                wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+            }
+        } else {
+            List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
+            for (int j = 0; j < list.size(); j++) {
+                String getTextList = list.get(j).getText();
+                Assert.assertTrue(Objects.equals(getTextList, textStatusMultiSelectRequest) || Objects.equals(getTextList, textStatusMultiSelectAccept));
+            }
+        }
+
+
+        // Проверка "Закрытые обращения". Проверка статуса "Закрыто" каждого обращения на каждой странице pagination
 
     }
 

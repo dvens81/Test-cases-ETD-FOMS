@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="local_etd_foms_issue_list" tests="1" skipped="0" failures="1" errors="0" timestamp="2022-07-20T10:40:37" hostname="BLACK" time="53.246">
+<testsuite name="local_etd_foms_issue_list" tests="1" skipped="0" failures="1" errors="0" timestamp="2022-07-20T12:56:25" hostname="BLACK" time="51.32">
   <properties/>
-  <testcase name="test" classname="local_etd_foms_issue_list" time="53.246">
+  <testcase name="test" classname="local_etd_foms_issue_list" time="51.32">
     <failure message="org.junit.ComparisonFailure: expected:&lt;[Анализ]&gt; but was:&lt;[Запрос данных]&gt;" type="org.junit.ComparisonFailure">org.junit.ComparisonFailure: expected:&lt;[Анализ]&gt; but was:&lt;[Запрос данных]&gt;
 	at org.junit.Assert.assertEquals(Assert.java:115)
 	at org.junit.Assert.assertEquals(Assert.java:144)
-	at local_etd_foms_issue_list.checkStatus(local_etd_foms_issue_list.java:53)
-	at local_etd_foms_issue_list.test(local_etd_foms_issue_list.java:173)
+	at local_etd_foms_issue_list.checkStatus(local_etd_foms_issue_list.java:56)
+	at local_etd_foms_issue_list.test(local_etd_foms_issue_list.java:178)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -62,16 +62,16 @@
   <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-Starting ChromeDriver 102.0.5005.61 (0e59bcc00cc4985ce39ad31c150065f159d95ad3-refs/branch-heads/5005@{#819}) on port 49343
+Starting ChromeDriver 102.0.5005.61 (0e59bcc00cc4985ce39ad31c150065f159d95ad3-refs/branch-heads/5005@{#819}) on port 57127
 Only local connections are allowed.
 Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
 ChromeDriver was started successfully.
-[1658313641.347][WARNING]: This version of ChromeDriver has not been tested with Chrome version 103.
-июл. 20, 2022 2:40:41 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+[1658321789.032][WARNING]: This version of ChromeDriver has not been tested with Chrome version 103.
+июл. 20, 2022 4:56:29 PM org.openqa.selenium.remote.ProtocolHandshake createSession
 INFO: Detected dialect: W3C
-июл. 20, 2022 2:40:42 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+июл. 20, 2022 4:56:29 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
 WARNING: Unable to find an exact match for CDP version 103, so returning the closest version found: 99
-июл. 20, 2022 2:40:42 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+июл. 20, 2022 4:56:29 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
 INFO: Found CDP implementation for version 103 of 99
 ]]></system-err>
 </testsuite>

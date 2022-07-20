@@ -37,25 +37,26 @@ public class local_etd_foms_issue_list {
     }
 
     private void checkStatus(String textStatus) {
-        if (isElementPresent1(driver, By.cssSelector(".pagination [ng-bind='$table.pagination.lastPage']"))) {
-            String paginationText = driver.findElement(By.cssSelector(".pagination [ng-bind='$table.pagination.lastPage']")).getText();
-            int paginationNumber = Integer.parseInt(paginationText);
+        List<WebElement> paginationList = driver.findElements(By.cssSelector(".pagination span:not([ng-if='$table.pagination.page + 2 < $table.pagination.lastPage && $table.pagination.lastPage > 4'])"));
+        int paginationNumberMax = 0;
 
-            for (int i = 0; i <= paginationNumber - 1; i++) {
-                List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
-                for (int j = 0; j < list.size(); j++) {
-                    String getTextList = list.get(j).getText();
-                    Assert.assertEquals(textStatus, getTextList);
-                }
-                driver.findElement(By.cssSelector(".ion-chevron-right")).click();
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+        for (int i = 0; i < paginationList.size(); i++) {
+            String getPaginationText = paginationList.get(i).getText();
+            int paginationNumber = Integer.parseInt(getPaginationText);
+
+            if (paginationNumber > paginationNumberMax) {
+                paginationNumberMax = paginationNumber;
             }
-        } else {
+        }
+
+        for (int i = 0; i <= paginationNumberMax - 1; i++) {
             List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
             for (int j = 0; j < list.size(); j++) {
                 String getTextList = list.get(j).getText();
                 Assert.assertEquals(textStatus, getTextList);
             }
+            driver.findElement(By.cssSelector(".ion-chevron-right")).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
         }
     }
 
@@ -119,8 +120,8 @@ public class local_etd_foms_issue_list {
 //        Assert.assertEquals(findText, getTextIssue);
 //        driver.findElement(By.cssSelector("input[name=search_summary]")).clear();
 
-        // Проверка фильтра по статусам. Проверка статуса каждого обращения на каждой странице pagination
-            // Проверка неактивности кнопки "Отправить", при нажатии на "Ответить на запрос данных" и "Вернуть в работу" из статусов "Запрос данных" и "Приёмка" соответственно
+        // Проверка фильтра по статусам. Проверка статуса для каждого обращения на каждой странице pagination
+        // Проверка неактивности кнопки "Отправить", при нажатии на "Ответить на запрос данных" и "Вернуть в работу" из статусов "Запрос данных" и "Приёмка" соответственно
 
 //        driver.get("http://black:8080/#/app/issues");
 //        TimeUnit.MILLISECONDS.sleep(7000);
@@ -151,7 +152,7 @@ public class local_etd_foms_issue_list {
         driver.get("http://black:8080/#/app/issues");
         pause();
 
-            // Ответить на запрос данных
+        // Ответить на запрос данных
         driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
 
@@ -192,7 +193,7 @@ public class local_etd_foms_issue_list {
         driver.get("http://black:8080/#/app/issues");
         pause();
 
-            // Вернуть в работу
+        // Вернуть в работу
         driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
 
@@ -219,30 +220,37 @@ public class local_etd_foms_issue_list {
         driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
 
-        if (isElementPresent1(driver, By.cssSelector(".pagination [ng-bind='$table.pagination.lastPage']"))) {
-            String paginationText = driver.findElement(By.cssSelector(".pagination [ng-bind='$table.pagination.lastPage']")).getText();
-            int paginationNumber = Integer.parseInt(paginationText);
+        List<WebElement> paginationList = driver.findElements(By.cssSelector(".pagination span:not([ng-if='$table.pagination.page + 2 < $table.pagination.lastPage && $table.pagination.lastPage > 4'])"));
+        int paginationNumberMax = 0;
 
-            for (int i = 0; i <= paginationNumber - 1; i++) {
-                List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
-                for (int j = 0; j < list.size(); j++) {
-                    String getTextList = list.get(j).getText();
-                    Assert.assertTrue(Objects.equals(getTextList, textStatusMultiSelectRequest) || Objects.equals(getTextList, textStatusMultiSelectAccept));
-                }
-                driver.findElement(By.cssSelector(".ion-chevron-right")).click();
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+        for (int i = 0; i < paginationList.size(); i++) {
+            String getPaginationText = paginationList.get(i).getText();
+            int paginationNumber = Integer.parseInt(getPaginationText);
+
+            if (paginationNumber > paginationNumberMax) {
+                paginationNumberMax = paginationNumber;
             }
-        } else {
+        }
+
+        for (int i = 0; i <= paginationNumberMax - 1; i++) {
             List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
             for (int j = 0; j < list.size(); j++) {
                 String getTextList = list.get(j).getText();
                 Assert.assertTrue(Objects.equals(getTextList, textStatusMultiSelectRequest) || Objects.equals(getTextList, textStatusMultiSelectAccept));
             }
+            driver.findElement(By.cssSelector(".ion-chevron-right")).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
         }
+        driver.get("http://black:8080/#/app/issues");
+        pause();
 
+        // Проверка "Закрытые обращения". Проверка статуса "Закрыто" для каждого обращения на каждой странице pagination
 
-        // Проверка "Закрытые обращения". Проверка статуса "Закрыто" каждого обращения на каждой странице pagination
+        driver.findElement(By.cssSelector(".align-items-center label.custom-checkbox")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+        String textStatusClose = "Закрыто";
 
+        checkStatus(textStatusClose);
     }
 
     @After

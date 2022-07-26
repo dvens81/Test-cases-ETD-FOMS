@@ -126,131 +126,146 @@ public class local_etd_foms_issue_list {
 //        driver.get("http://black:8080/#/app/issues");
 //        TimeUnit.MILLISECONDS.sleep(7000);
 
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+//        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+//
+//        // Открыто
+//        String textStatusOpen = "Открыто";
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(1) span")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//
+//        checkStatus(textStatusOpen);
+//
+//        driver.get("http://black:8080/#/app/issues");
+//        pause();
+//
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+//        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+//
+//        // Запрос данных
+//        String textStatusRequest = "Запрос данных";
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(2) span")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//
+//        checkStatus(textStatusRequest);
+//
+//        driver.get("http://black:8080/#/app/issues");
+//        pause();
+//
+//        // Ответить на запрос данных
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+//        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+//
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(2) span")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//
+//        driver.findElement(By.cssSelector(".table__body .custom-checkbox")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[ng-if='!checkFKIssues'] a:first-child"))).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".modal-content")));
+//        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(".modal-footer [disabled=disabled]")));
+//
+//        driver.get("http://black:8080/#/app/issues");
+//        pause();
+//
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+//        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+//
+//        // Анализ
+//        String textStatusAnalysis = "Анализ";
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(3) span")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//
+//        checkStatus(textStatusAnalysis);
+//
+//        driver.get("http://black:8080/#/app/issues");
+//        pause();
+//
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+//        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+//
+//        // Приёмка
+//        String textStatusAccept = "Приёмка";
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//
+//        checkStatus(textStatusAccept);
+//
+//        driver.get("http://black:8080/#/app/issues");
+//        pause();
+//
+//        // Вернуть в работу
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+//        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+//
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//
+//        driver.findElement(By.cssSelector(".table__body .custom-checkbox")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[ng-if='!checkFKIssues'] a:last-child"))).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".modal-content")));
+//        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(".modal-footer [disabled=disabled]")));
+//
+//        driver.get("http://black:8080/#/app/issues");
+//        pause();
+//
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
+//        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
+//
+//        // Проверка фильтра по статусам. Выбор нескольких статусов одновременно. Проверка статуса каждого обращения на каждой странице pagination
+//
+//        String textStatusMultiSelectRequest = "Запрос данных";
+//        String textStatusMultiSelectAccept = "Приёмка";
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(2) span")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//
+//        List<WebElement> paginationList = driver.findElements(By.cssSelector(".pagination span:not([ng-if='$table.pagination.page + 2 < $table.pagination.lastPage && $table.pagination.lastPage > 4'])"));
+//        int paginationNumberMax = 0;
+//
+//        for (int i = 0; i < paginationList.size(); i++) {
+//            String getPaginationText = paginationList.get(i).getText();
+//            int paginationNumber = Integer.parseInt(getPaginationText);
+//
+//            if (paginationNumber > paginationNumberMax) {
+//                paginationNumberMax = paginationNumber;
+//            }
+//        }
+//
+//        for (int i = 0; i <= paginationNumberMax - 1; i++) {
+//            List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
+//            for (int j = 0; j < list.size(); j++) {
+//                String getTextList = list.get(j).getText();
+//                Assert.assertTrue(Objects.equals(getTextList, textStatusMultiSelectRequest) || Objects.equals(getTextList, textStatusMultiSelectAccept));
+//            }
+//            driver.findElement(By.cssSelector(".ion-chevron-right")).click();
+//            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//        }
+//        driver.get("http://black:8080/#/app/issues");
+//        pause();
+//
+//        // Проверка "Закрытые обращения". Проверка статуса "Закрыто" для каждого обращения на каждой странице pagination
+//
+//        driver.findElement(By.cssSelector(".align-items-center label.custom-checkbox")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+//        String textStatusClose = "Закрыто";
+//
+//        checkStatus(textStatusClose);
 
-        // Открыто
-        String textStatusOpen = "Открыто";
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(1) span")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
+        // Проверка фильтра по датам "Создано". Фильтрация созданных обращений по Диапазону и Месяцу.
+        // Сортировка обращений по номерам в выбранном диапазоне/месяце.
 
-        checkStatus(textStatusOpen);
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']._open")));
+        //WebElement elementOpen = driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']._open"));
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) a:first-child")).click();
+        //wait.until(ExpectedConditions.stalenessOf(elementOpen));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) ._right")));
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys("13.07.2020/19.07.2020");
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
+        driver.findElement(By.cssSelector(".table__head-row th:nth-child(2) .column-title")).click();
+        TimeUnit.MILLISECONDS.sleep(400);
 
-        driver.get("http://black:8080/#/app/issues");
-        pause();
-
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
-
-        // Запрос данных
-        String textStatusRequest = "Запрос данных";
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(2) span")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
-
-        checkStatus(textStatusRequest);
-
-        driver.get("http://black:8080/#/app/issues");
-        pause();
-
-        // Ответить на запрос данных
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
-
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(2) span")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
-
-        driver.findElement(By.cssSelector(".table__body .custom-checkbox")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[ng-if='!checkFKIssues'] a:first-child"))).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".modal-content")));
-        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(".modal-footer [disabled=disabled]")));
-
-        driver.get("http://black:8080/#/app/issues");
-        pause();
-
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
-
-        // Анализ
-        String textStatusAnalysis = "Анализ";
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(3) span")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
-
-        checkStatus(textStatusAnalysis);
-
-        driver.get("http://black:8080/#/app/issues");
-        pause();
-
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
-
-        // Приёмка
-        String textStatusAccept = "Приёмка";
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
-
-        checkStatus(textStatusAccept);
-
-        driver.get("http://black:8080/#/app/issues");
-        pause();
-
-        // Вернуть в работу
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
-
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
-
-        driver.findElement(By.cssSelector(".table__body .custom-checkbox")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[ng-if='!checkFKIssues'] a:last-child"))).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".modal-content")));
-        Assert.assertTrue(isElementPresent1(driver, By.cssSelector(".modal-footer [disabled=disabled]")));
-
-        driver.get("http://black:8080/#/app/issues");
-        pause();
-
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
-
-        // Проверка фильтра по статусам. Выбор нескольких статусов одновременно. Проверка статуса каждого обращения на каждой странице pagination
-
-        String textStatusMultiSelectRequest = "Запрос данных";
-        String textStatusMultiSelectAccept = "Приёмка";
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(2) span")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(6) a:nth-child(4) span")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
-
-        List<WebElement> paginationList = driver.findElements(By.cssSelector(".pagination span:not([ng-if='$table.pagination.page + 2 < $table.pagination.lastPage && $table.pagination.lastPage > 4'])"));
-        int paginationNumberMax = 0;
-
-        for (int i = 0; i < paginationList.size(); i++) {
-            String getPaginationText = paginationList.get(i).getText();
-            int paginationNumber = Integer.parseInt(getPaginationText);
-
-            if (paginationNumber > paginationNumberMax) {
-                paginationNumberMax = paginationNumber;
-            }
-        }
-
-        for (int i = 0; i <= paginationNumberMax - 1; i++) {
-            List<WebElement> list = driver.findElements(By.cssSelector(".table__content td:nth-child(6)"));
-            for (int j = 0; j < list.size(); j++) {
-                String getTextList = list.get(j).getText();
-                Assert.assertTrue(Objects.equals(getTextList, textStatusMultiSelectRequest) || Objects.equals(getTextList, textStatusMultiSelectAccept));
-            }
-            driver.findElement(By.cssSelector(".ion-chevron-right")).click();
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
-        }
-        driver.get("http://black:8080/#/app/issues");
-        pause();
-
-        // Проверка "Закрытые обращения". Проверка статуса "Закрыто" для каждого обращения на каждой странице pagination
-
-        driver.findElement(By.cssSelector(".align-items-center label.custom-checkbox")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(6)")));
-        String textStatusClose = "Закрыто";
-
-        checkStatus(textStatusClose);
     }
 
     @After

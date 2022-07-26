@@ -255,16 +255,25 @@ public class local_etd_foms_issue_list {
         // Проверка фильтра по датам "Создано". Фильтрация созданных обращений по Диапазону и Месяцу.
         // Сортировка обращений по номерам в выбранном диапазоне/месяце.
 
+        // Фильтрация по Диапазону
         driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']._open")));
-        //WebElement elementOpen = driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']._open"));
         driver.findElement(By.cssSelector(".table__filters th:nth-child(3) a:first-child")).click();
-        //wait.until(ExpectedConditions.stalenessOf(elementOpen));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) ._right")));
         driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys("13.07.2020/19.07.2020");
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
         driver.findElement(By.cssSelector(".table__head-row th:nth-child(2) .column-title")).click();
         TimeUnit.MILLISECONDS.sleep(400);
+
+//        // Фильтрация по Месяцу
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']._open")));
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) a:last-child")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) ._right")));
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys("Май 2020");
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
+//        driver.findElement(By.cssSelector(".table__head-row th:nth-child(2) .column-title")).click();
+//        TimeUnit.MILLISECONDS.sleep(400);
 
     }
 

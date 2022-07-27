@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -119,13 +121,13 @@ public class local_etd_foms_issue_list {
 //        String getTextIssue = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(5)"))).getText();
 //        Assert.assertEquals(findText, getTextIssue);
 //        driver.findElement(By.cssSelector("input[name=search_summary]")).clear();
-
-        // Проверка фильтра по статусам. Проверка статуса для каждого обращения на каждой странице pagination
-        // Проверка неактивности кнопки "Отправить", при нажатии на "Ответить на запрос данных" и "Вернуть в работу" из статусов "Запрос данных" и "Приёмка" соответственно
-
+//
+//        // Проверка фильтра по статусам. Проверка статуса для каждого обращения на каждой странице pagination
+//        // Проверка неактивности кнопки "Отправить", при нажатии на "Ответить на запрос данных" и "Вернуть в работу" из статусов "Запрос данных" и "Приёмка" соответственно
+//
 //        driver.get("http://black:8080/#/app/issues");
 //        TimeUnit.MILLISECONDS.sleep(7000);
-
+//
 //        driver.findElement(By.cssSelector(".table__filters th:nth-child(6)")).click();
 //        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".table__filters th:nth-child(6) .dropdown-menu__item")));
 //
@@ -251,9 +253,13 @@ public class local_etd_foms_issue_list {
 //        String textStatusClose = "Закрыто";
 //
 //        checkStatus(textStatusClose);
+//
+//        driver.get("http://black:8080/#/app/issues");
+//        pause();
 
-        // Проверка фильтра по датам "Создано". Фильтрация созданных обращений по Диапазону и Месяцу.
+        // Проверка фильтра по датам "Создано". Фильтрация обращений по Диапазону и Месяцу.
         // Сортировка обращений по номерам в выбранном диапазоне/месяце.
+        // Проверка сортировки номеров по возрастанию. Проверка обращений по датам в заданном диапазоне/месяце.
 
         // Фильтрация по Диапазону
         driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();
@@ -262,8 +268,52 @@ public class local_etd_foms_issue_list {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) ._right")));
         driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys("13.07.2020/19.07.2020");
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
+
+        // Сортировка обращений по номерам.
         driver.findElement(By.cssSelector(".table__head-row th:nth-child(2) .column-title")).click();
         TimeUnit.MILLISECONDS.sleep(400);
+
+        ArrayList<String> listIssueNumber = new ArrayList<>();
+
+        List<WebElement> paginationList = driver.findElements(By.cssSelector(".pagination span:not([ng-if='$table.pagination.page + 2 < $table.pagination.lastPage && $table.pagination.lastPage > 4'])"));
+        int paginationNumberMax = 0;
+
+        for (int i = 0; i < paginationList.size(); i++) {
+            String getPaginationText = paginationList.get(i).getText();
+            int paginationNumber = Integer.parseInt(getPaginationText);
+
+            if (paginationNumber > paginationNumberMax) {
+                paginationNumberMax = paginationNumber;
+            }
+        }
+
+        for (int i = 0; i <= paginationNumberMax - 1; i++) {
+            List<WebElement> elementsIssueNumber = driver.findElements(By.cssSelector(".table__content td:nth-child(2)"));
+
+            for (int j = 0; j < elementsIssueNumber.size(); j++) {
+                String textNumber = elementsIssueNumber.get(j).getText();
+                listIssueNumber.add(textNumber);
+            }
+            driver.findElement(By.cssSelector(".ion-chevron-right")).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
+        }
+
+        //Проверка сортировки номеров по возрастанию.
+        ArrayList<String> listIssueNumberSort = new ArrayList<>();
+        System.out.println("listIssueNumber: " + listIssueNumber);
+        for (int i = 0; i < listIssueNumber.size(); i++) {
+            listIssueNumberSort.add(i, listIssueNumber.get(i));
+        }
+        Collections.sort(listIssueNumberSort);
+        System.out.println("listIssueNumberSort: " + listIssueNumberSort);
+        Assert.assertEquals(listIssueNumberSort, listIssueNumber);
+
+        // Проверка обращений по датам в заданном диапазоне.
+
+
+
+
+        // String[] words = font.split(" ");
 
 //        // Фильтрация по Месяцу
 //        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();

@@ -10,11 +10,11 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.text.ParseException;
+import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class local_etd_foms_issue_list {
@@ -62,6 +62,10 @@ public class local_etd_foms_issue_list {
         }
     }
 
+    private LocalDate dateParse(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return LocalDate.parse(date, formatter);
+    }
 
     @Before
     public void start() {
@@ -73,7 +77,7 @@ public class local_etd_foms_issue_list {
     }
 
     @Test
-    public void test() throws InterruptedException {
+    public void test() throws InterruptedException, ParseException {
 
         // Авторизация
         driver.get("http://black:8080/");
@@ -262,11 +266,14 @@ public class local_etd_foms_issue_list {
         // Проверка сортировки номеров по возрастанию. Проверка обращений по датам в заданном диапазоне/месяце.
 
         // Фильтрация по Диапазону
+        String dataStart = "13.07.2020";
+        String dataEnd = "19.07.2020";
+
         driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']._open")));
         driver.findElement(By.cssSelector(".table__filters th:nth-child(3) a:first-child")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) ._right")));
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys("13.07.2020/19.07.2020");
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys(dataStart + "/" + dataEnd);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
 
         // Сортировка обращений по номерам.
@@ -274,6 +281,7 @@ public class local_etd_foms_issue_list {
         TimeUnit.MILLISECONDS.sleep(400);
 
         ArrayList<String> listIssueNumber = new ArrayList<>();
+        ArrayList<String> listIssueDateTime = new ArrayList<>();
 
         List<WebElement> paginationList = driver.findElements(By.cssSelector(".pagination span:not([ng-if='$table.pagination.page + 2 < $table.pagination.lastPage && $table.pagination.lastPage > 4'])"));
         int paginationNumberMax = 0;
@@ -289,10 +297,14 @@ public class local_etd_foms_issue_list {
 
         for (int i = 0; i <= paginationNumberMax - 1; i++) {
             List<WebElement> elementsIssueNumber = driver.findElements(By.cssSelector(".table__content td:nth-child(2)"));
+            List<WebElement> elementsIssueDate = driver.findElements(By.cssSelector(".table__content td:nth-child(3)"));
 
             for (int j = 0; j < elementsIssueNumber.size(); j++) {
                 String textNumber = elementsIssueNumber.get(j).getText();
-                listIssueNumber.add(textNumber);
+                listIssueNumber.add(textNumber); // Получаем список номеров
+
+                String textDate = elementsIssueDate.get(j).getText();
+                listIssueDateTime.add(textDate); // Получаем список дат со временем
             }
             driver.findElement(By.cssSelector(".ion-chevron-right")).click();
             wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
@@ -309,11 +321,20 @@ public class local_etd_foms_issue_list {
         Assert.assertEquals(listIssueNumberSort, listIssueNumber);
 
         // Проверка обращений по датам в заданном диапазоне.
+        ArrayList<String> listIssueDate = new ArrayList<>();
+        for (int i = 0; i < listIssueDateTime.size(); i++) {
+            String[] dates = listIssueDateTime.get(i).split(" "); // Парсим дату
+            listIssueDate.add(dates[0]); // Получаем список дат
+        }
 
+        LocalDate dateStartParse = dateParse(dataStart);
+        LocalDate dateEndParse = dateParse(dataEnd);
 
+        for (int i = 0; i < listIssueDate.size(); i++) {
+            LocalDate dateCheckParse = dateParse(listIssueDate.get(i));
+            Assert.assertTrue(dateCheckParse.isEqual(dateStartParse) || dateCheckParse.isAfter(dateStartParse) && dateCheckParse.isEqual(dateEndParse) || dateCheckParse.isBefore(dateEndParse));
+        }
 
-
-        // String[] words = font.split(" ");
 
 //        // Фильтрация по Месяцу
 //        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();
@@ -326,6 +347,7 @@ public class local_etd_foms_issue_list {
 //        TimeUnit.MILLISECONDS.sleep(400);
 
     }
+
 
     @After
     public void stop() {

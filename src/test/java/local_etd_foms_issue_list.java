@@ -10,7 +10,10 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -66,6 +69,32 @@ public class local_etd_foms_issue_list {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return LocalDate.parse(date, formatter);
     }
+
+    public static String getNumberMonth (String month) {
+        String result = "";
+        switch (month) {
+            case "Январь" -> result = "01";
+            case "Февраль" -> result = "02";
+            case "Март" -> result = "03";
+            case "Апрель" -> result = "04";
+            case "Май" -> result = "05";
+            case "Июнь" -> result = "06";
+            case "Июль" -> result = "07";
+            case "Август" -> result = "08";
+            case "Сентябрь" -> result = "09";
+            case "Октябрь" -> result = "10";
+            case "Ноябрь" -> result = "11";
+            case "Декабрь" -> result = "12";
+            default -> {
+            }
+        }
+        return result;
+    }
+
+    // Другой вариант- можно положить в массив и пройтись по нему
+    // по индексу понятно какой номер месяца
+    // январь 0 индекс
+    // номер получается индекс+1
 
     @Before
     public void start() {
@@ -265,88 +294,155 @@ public class local_etd_foms_issue_list {
         // Сортировка обращений по номерам в выбранном диапазоне/месяце.
         // Проверка сортировки номеров по возрастанию. Проверка обращений по датам в заданном диапазоне/месяце.
 
-        // Фильтрация по Диапазону
-        String dataStart = "13.07.2020";
-        String dataEnd = "19.07.2020";
+//        // Фильтрация по Диапазону
+//        String dataStart = "13.07.2020";
+//        String dataEnd = "19.07.2020";
+//
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']._open")));
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) a:first-child")).click();
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) ._right")));
+//        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys(dataStart + "/" + dataEnd);
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
+//
+//        // Сортировка обращений по номерам.
+//        driver.findElement(By.cssSelector(".table__head-row th:nth-child(2) .column-title")).click();
+//        TimeUnit.MILLISECONDS.sleep(400);
+//
+//        ArrayList<String> listIssueNumber = new ArrayList<>();
+//        ArrayList<String> listIssueDateTime = new ArrayList<>();
+//
+//        List<WebElement> paginationList = driver.findElements(By.cssSelector(".pagination span:not([ng-if='$table.pagination.page + 2 < $table.pagination.lastPage && $table.pagination.lastPage > 4'])"));
+//        int paginationNumberMax = 0;
+//
+//        for (int i = 0; i < paginationList.size(); i++) {
+//            String getPaginationText = paginationList.get(i).getText();
+//            int paginationNumber = Integer.parseInt(getPaginationText);
+//
+//            if (paginationNumber > paginationNumberMax) {
+//                paginationNumberMax = paginationNumber;
+//            }
+//        }
+//
+//        for (int i = 0; i <= paginationNumberMax - 1; i++) {
+//            List<WebElement> elementsIssueNumber = driver.findElements(By.cssSelector(".table__content td:nth-child(2)"));
+//            List<WebElement> elementsIssueDate = driver.findElements(By.cssSelector(".table__content td:nth-child(3)"));
+//
+//            for (int j = 0; j < elementsIssueNumber.size(); j++) {
+//                String textNumber = elementsIssueNumber.get(j).getText();
+//                listIssueNumber.add(textNumber); // Получаем список номеров
+//
+//                String textDate = elementsIssueDate.get(j).getText();
+//                listIssueDateTime.add(textDate); // Получаем список дат со временем
+//            }
+//            driver.findElement(By.cssSelector(".ion-chevron-right")).click();
+//            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
+//        }
+//
+//        //Проверка сортировки номеров по возрастанию.
+//        ArrayList<String> listIssueNumberSort = new ArrayList<>();
+//        System.out.println("listIssueNumber: " + listIssueNumber);
+//        for (int i = 0; i < listIssueNumber.size(); i++) {
+//            listIssueNumberSort.add(i, listIssueNumber.get(i));
+//        }
+//        Collections.sort(listIssueNumberSort);
+//        System.out.println("listIssueNumberSort: " + listIssueNumberSort);
+//        Assert.assertEquals(listIssueNumberSort, listIssueNumber);
+//
+//        // Проверка обращений по датам в заданном диапазоне.
+//        ArrayList<String> listIssueDate = new ArrayList<>();
+//        for (int i = 0; i < listIssueDateTime.size(); i++) {
+//            String[] dates = listIssueDateTime.get(i).split(" "); // Парсим дату
+//            listIssueDate.add(dates[0]); // Получаем список дат
+//        }
+//
+//        LocalDate dateStartParse = dateParse(dataStart);
+//        LocalDate dateEndParse = dateParse(dataEnd);
+//
+//        for (int i = 0; i < listIssueDate.size(); i++) {
+//            LocalDate dateCheckParse = dateParse(listIssueDate.get(i));
+//            Assert.assertTrue(dateCheckParse.isEqual(dateStartParse) || dateCheckParse.isAfter(dateStartParse) && dateCheckParse.isEqual(dateEndParse) || dateCheckParse.isBefore(dateEndParse));
+//        }
+
+        // Фильтрация по Месяцу
+        String dataMonthInput = "Май 2020";
 
         driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']._open")));
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) a:first-child")).click();
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) a:last-child")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) ._right")));
-        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys(dataStart + "/" + dataEnd);
+        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys(dataMonthInput);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
 
         // Сортировка обращений по номерам.
         driver.findElement(By.cssSelector(".table__head-row th:nth-child(2) .column-title")).click();
         TimeUnit.MILLISECONDS.sleep(400);
 
-        ArrayList<String> listIssueNumber = new ArrayList<>();
-        ArrayList<String> listIssueDateTime = new ArrayList<>();
+        ArrayList<String> listIssueNumberMonth = new ArrayList<>();
+        ArrayList<String> listIssueDateTimeMonth = new ArrayList<>();
 
-        List<WebElement> paginationList = driver.findElements(By.cssSelector(".pagination span:not([ng-if='$table.pagination.page + 2 < $table.pagination.lastPage && $table.pagination.lastPage > 4'])"));
-        int paginationNumberMax = 0;
+        List<WebElement> paginationListMonth = driver.findElements(By.cssSelector(".pagination span:not([ng-if='$table.pagination.page + 2 < $table.pagination.lastPage && $table.pagination.lastPage > 4'])"));
+        int paginationNumberMaxMonth = 0;
 
-        for (int i = 0; i < paginationList.size(); i++) {
-            String getPaginationText = paginationList.get(i).getText();
+        for (int i = 0; i < paginationListMonth.size(); i++) {
+            String getPaginationText = paginationListMonth.get(i).getText();
             int paginationNumber = Integer.parseInt(getPaginationText);
 
-            if (paginationNumber > paginationNumberMax) {
-                paginationNumberMax = paginationNumber;
+            if (paginationNumber > paginationNumberMaxMonth) {
+                paginationNumberMaxMonth = paginationNumber;
             }
         }
 
-        for (int i = 0; i <= paginationNumberMax - 1; i++) {
-            List<WebElement> elementsIssueNumber = driver.findElements(By.cssSelector(".table__content td:nth-child(2)"));
-            List<WebElement> elementsIssueDate = driver.findElements(By.cssSelector(".table__content td:nth-child(3)"));
+        for (int i = 0; i <= paginationNumberMaxMonth - 1; i++) {
+            List<WebElement> elementsIssueNumberMonth = driver.findElements(By.cssSelector(".table__content td:nth-child(2)"));
+            List<WebElement> elementsIssueDateMonth = driver.findElements(By.cssSelector(".table__content td:nth-child(3)"));
 
-            for (int j = 0; j < elementsIssueNumber.size(); j++) {
-                String textNumber = elementsIssueNumber.get(j).getText();
-                listIssueNumber.add(textNumber); // Получаем список номеров
+            for (int j = 0; j < elementsIssueNumberMonth.size(); j++) {
+                String textNumber = elementsIssueNumberMonth.get(j).getText();
+                listIssueNumberMonth.add(textNumber); // Получаем список номеров
 
-                String textDate = elementsIssueDate.get(j).getText();
-                listIssueDateTime.add(textDate); // Получаем список дат со временем
+                String textDate = elementsIssueDateMonth.get(j).getText();
+                listIssueDateTimeMonth.add(textDate); // Получаем список дат со временем
             }
             driver.findElement(By.cssSelector(".ion-chevron-right")).click();
             wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
         }
 
         //Проверка сортировки номеров по возрастанию.
-        ArrayList<String> listIssueNumberSort = new ArrayList<>();
-        System.out.println("listIssueNumber: " + listIssueNumber);
-        for (int i = 0; i < listIssueNumber.size(); i++) {
-            listIssueNumberSort.add(i, listIssueNumber.get(i));
+        ArrayList<String> listIssueNumberSortMonth = new ArrayList<>();
+        System.out.println("listIssueNumberMonth: " + listIssueNumberMonth);
+        for (int i = 0; i < listIssueNumberMonth.size(); i++) {
+            listIssueNumberSortMonth.add(i, listIssueNumberMonth.get(i));
         }
-        Collections.sort(listIssueNumberSort);
-        System.out.println("listIssueNumberSort: " + listIssueNumberSort);
-        Assert.assertEquals(listIssueNumberSort, listIssueNumber);
+        Collections.sort(listIssueNumberSortMonth);
+        System.out.println("listIssueNumberSortMonth: " + listIssueNumberSortMonth);
+        Assert.assertEquals(listIssueNumberSortMonth, listIssueNumberMonth);
 
-        // Проверка обращений по датам в заданном диапазоне.
-        ArrayList<String> listIssueDate = new ArrayList<>();
-        for (int i = 0; i < listIssueDateTime.size(); i++) {
-            String[] dates = listIssueDateTime.get(i).split(" "); // Парсим дату
-            listIssueDate.add(dates[0]); // Получаем список дат
-        }
-
-        LocalDate dateStartParse = dateParse(dataStart);
-        LocalDate dateEndParse = dateParse(dataEnd);
-
-        for (int i = 0; i < listIssueDate.size(); i++) {
-            LocalDate dateCheckParse = dateParse(listIssueDate.get(i));
-            Assert.assertTrue(dateCheckParse.isEqual(dateStartParse) || dateCheckParse.isAfter(dateStartParse) && dateCheckParse.isEqual(dateEndParse) || dateCheckParse.isBefore(dateEndParse));
+        // Проверка обращений по датам в заданном месяце.
+        ArrayList<String> listIssueDateMonth = new ArrayList<>();
+        for (int i = 0; i < listIssueDateTimeMonth.size(); i++) {
+            String[] dates = listIssueDateTimeMonth.get(i).split(" "); // Парсим дату
+            listIssueDateMonth.add(dates[0]); // Получаем список дат
         }
 
+        ArrayList<String> listIssueDateMonth2 = new ArrayList<>();
+        for (int i = 0; i < listIssueDateMonth.size(); i++) {
+            String[] dataMonthInputParse = listIssueDateMonth.get(i).split("\\.");
+            listIssueDateMonth2.add(dataMonthInputParse[1]);
+        }
 
-//        // Фильтрация по Месяцу
-//        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']")).click();
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) [ng-click='$dropdown.open($event);']._open")));
-//        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) a:last-child")).click();
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__filters th:nth-child(3) ._right")));
-//        driver.findElement(By.cssSelector(".table__filters th:nth-child(3) input[title]")).sendKeys("Май 2020");
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
-//        driver.findElement(By.cssSelector(".table__head-row th:nth-child(2) .column-title")).click();
-//        TimeUnit.MILLISECONDS.sleep(400);
+        // Танцы с датами
+        String[] dataMonthInputParse = dataMonthInput.split(" "); // Отделяем месяц и год
+        String data = dataMonthInputParse[0];
+        String month = getNumberMonth(data);
+        for (int i = 0; i < listIssueDateMonth2.size(); i++) {
+            Assert.assertEquals(month, listIssueDateMonth2.get(i));
+        }
+
+
 
     }
+
 
 
     @After

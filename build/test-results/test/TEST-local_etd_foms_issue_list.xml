@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="local_etd_foms_issue_list" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-08-04T15:29:03" hostname="BLACK" time="23.928">
+<testsuite name="local_etd_foms_issue_list" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-08-05T08:34:20" hostname="BLACK" time="25.768">
   <properties/>
-  <testcase name="test" classname="local_etd_foms_issue_list" time="23.928"/>
-  <system-out><![CDATA[listIssueNumberMonth: [0900858, 0900882, 0900900, 0900901]
-listIssueNumberSortMonth: [0900858, 0900882, 0900900, 0900901]
+  <testcase name="test" classname="local_etd_foms_issue_list" time="25.768"/>
+  <system-out><![CDATA[listIssueNumberMonth: [0900407, 0900408, 0900453, 0900516, 0900528, 0900561, 0900564, 0900580, 0900581, 0900587, 0900588, 0900589, 0900590, 0900667, 0900668, 0900675, 0900676, 0910762]
+listIssueNumberSortMonth: [0900407, 0900408, 0900453, 0900516, 0900528, 0900561, 0900564, 0900580, 0900581, 0900587, 0900588, 0900589, 0900590, 0900667, 0900668, 0900675, 0900676, 0910762]
 ]]></system-out>
   <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-Starting ChromeDriver 102.0.5005.61 (0e59bcc00cc4985ce39ad31c150065f159d95ad3-refs/branch-heads/5005@{#819}) on port 58363
+Starting ChromeDriver 102.0.5005.61 (0e59bcc00cc4985ce39ad31c150065f159d95ad3-refs/branch-heads/5005@{#819}) on port 61885
 Only local connections are allowed.
 Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
 ChromeDriver was started successfully.
-[1659626947.226][WARNING]: This version of ChromeDriver has not been tested with Chrome version 103.
-авг. 04, 2022 7:29:07 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+[1659688464.305][WARNING]: This version of ChromeDriver has not been tested with Chrome version 103.
+авг. 05, 2022 12:34:24 PM org.openqa.selenium.remote.ProtocolHandshake createSession
 INFO: Detected dialect: W3C
-авг. 04, 2022 7:29:08 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+авг. 05, 2022 12:34:25 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
 WARNING: Unable to find an exact match for CDP version 103, so returning the closest version found: 99
-авг. 04, 2022 7:29:08 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+авг. 05, 2022 12:34:25 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
 INFO: Found CDP implementation for version 103 of 99
 ]]></system-err>
 </testsuite>

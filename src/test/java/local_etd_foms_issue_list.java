@@ -17,6 +17,20 @@ import java.time.format.DateTimeFormatter;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+// Списочная форма обращений
+
+// Проверки:
+// 1) Проверка чекбоксов обращений
+// 2) Проверка "Напечатать отчет"
+// 3) Проверка поиска обращения по теме
+// 4) Проверка фильтра по статусам. Проверка статуса для каждого обращения на каждой странице pagination
+// 5) Проверка неактивности кнопки "Отправить", при нажатии на "Ответить на запрос данных" и "Вернуть в работу" из статусов "Запрос данных" и "Приёмка" соответственно
+// 6) Проверка фильтра по статусам. Выбор нескольких статусов одновременно- MultiSelect. Проверка статуса каждого обращения на каждой странице pagination
+// 7) Проверка "Закрытые обращения". Проверка статуса "Закрыто" для каждого обращения на каждой странице pagination
+// 8) Проверка фильтра по датам "Создано". Фильтрация обращений по Диапазону и Месяцу.
+// 9) Сортировка обращений по номерам в выбранном диапазоне/месяце.
+// 10) Проверка сортировки номеров по возрастанию. Проверка обращений по датам в заданном диапазоне/месяце.
+
 public class local_etd_foms_issue_list {
 
     private WebDriver driver;
@@ -66,6 +80,25 @@ public class local_etd_foms_issue_list {
             }
         }
         return paginationNumberMax;
+    }
+
+    private void getList(ArrayList<String> listNumber, ArrayList<String> listDateTime) {
+        int paginationNumberMax = getPaginationNumberMax();
+
+        for (int i = 0; i <= paginationNumberMax - 1; i++) {
+            List<WebElement> elementsNumber = driver.findElements(By.cssSelector(".table__content td:nth-child(2)"));
+            List<WebElement> elementsDate = driver.findElements(By.cssSelector(".table__content td:nth-child(3)"));
+
+            for (int j = 0; j < elementsNumber.size(); j++) {
+                String textNumber = elementsNumber.get(j).getText();
+                listNumber.add(textNumber); // Получаем список номеров
+
+                String textDate = elementsDate.get(j).getText();
+                listDateTime.add(textDate); // Получаем список дат со временем
+            }
+            driver.findElement(By.cssSelector(".ion-chevron-right")).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
+        }
     }
 
     private LocalDate dateParse(String date) {
@@ -314,22 +347,7 @@ public class local_etd_foms_issue_list {
         ArrayList<String> listIssueNumber = new ArrayList<>();
         ArrayList<String> listIssueDateTime = new ArrayList<>();
 
-        int paginationNumberMax = getPaginationNumberMax();
-
-        for (int i = 0; i <= paginationNumberMax - 1; i++) {
-            List<WebElement> elementsIssueNumber = driver.findElements(By.cssSelector(".table__content td:nth-child(2)"));
-            List<WebElement> elementsIssueDate = driver.findElements(By.cssSelector(".table__content td:nth-child(3)"));
-
-            for (int j = 0; j < elementsIssueNumber.size(); j++) {
-                String textNumber = elementsIssueNumber.get(j).getText();
-                listIssueNumber.add(textNumber); // Получаем список номеров
-
-                String textDate = elementsIssueDate.get(j).getText();
-                listIssueDateTime.add(textDate); // Получаем список дат со временем
-            }
-            driver.findElement(By.cssSelector(".ion-chevron-right")).click();
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
-        }
+        getList(listIssueNumber, listIssueDateTime);
 
         //Проверка сортировки номеров по возрастанию.
         ArrayList<String> listIssueNumberSort = new ArrayList<>();
@@ -375,22 +393,7 @@ public class local_etd_foms_issue_list {
         ArrayList<String> listIssueNumberMonth = new ArrayList<>();
         ArrayList<String> listIssueDateTimeMonth = new ArrayList<>();
 
-        int paginationNumberMaxMonth = getPaginationNumberMax();
-
-        for (int i = 0; i <= paginationNumberMaxMonth - 1; i++) {
-            List<WebElement> elementsIssueNumberMonth = driver.findElements(By.cssSelector(".table__content td:nth-child(2)"));
-            List<WebElement> elementsIssueDateMonth = driver.findElements(By.cssSelector(".table__content td:nth-child(3)"));
-
-            for (int j = 0; j < elementsIssueNumberMonth.size(); j++) {
-                String textNumber = elementsIssueNumberMonth.get(j).getText();
-                listIssueNumberMonth.add(textNumber); // Получаем список номеров
-
-                String textDate = elementsIssueDateMonth.get(j).getText();
-                listIssueDateTimeMonth.add(textDate); // Получаем список дат со временем
-            }
-            driver.findElement(By.cssSelector(".ion-chevron-right")).click();
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".table__content td:nth-child(2)")));
-        }
+        getList(listIssueNumberMonth, listIssueDateTimeMonth);
 
         //Проверка сортировки номеров по возрастанию.
         ArrayList<String> listIssueNumberSortMonth = new ArrayList<>();
